@@ -1,149 +1,0 @@
-/**
- * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  JDK_VERSION = "1.5";  static = true;}PARSER_BEGIN(PCREParser)package org.comp.pcre.grammar;
-
-public class PCREParser{  public static void main(String args []) throws ParseException  {    PCREParser parser = new PCREParser(System.in);    //while (true)    {      System.out.println("Reading from standard input...");      try      {
-        parser.start();		//      }      catch (Exception e)      {        System.out.println("NOK.");        System.out.println(e.getMessage());      }      catch (Error e)      {        System.out.println("Oops.");        System.out.println(e.getMessage());        //break;      }    }  }}PARSER_END(PCREParser)SKIP :{  "\r"| "\t"| "\n"}
-TOKEN:{ 
-  <NUMBER: ["0"-"9"] >
-| <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
-| <DOT: "."> /* any character except newline /  in dotall mode, any character whatsoever */
-| <DEC: "\\d">    /* any decimal digit */
-| <TAB: "\\t">    /* tab */
-| <NULL: "\\0">    /* null char */
-| <NOTDEC: "\\D">     /* any character that is not a decimal digit */
-| <HWHITES: "\\h">     /* any horizontal white space character */
-| <HWHITES_R: "\\K">     /* reset match */
-| <NHWHITES: "\\H">     /* any character that is not a horizontal white space character */
-| <WHITES: "\\s">     /* any white space character */
-| <NWHITES: "\\S">    /*  any character that is not a white space character */
-| <VWHITES: "\\v">        /*      any vertical white space character */
-| <NVWHITES: "\\V">     /* any character that is not a vertical white space character */
-| <WORD: "\\w">         /*     any "word" character */
-| <NWORD: "\\W">         /*     any "non-word" character */
-| <PLUS: "+"> /*  	Matches the preceding pattern element one or more times. */
-| <INTERROGATION: "?"> /* 	Matches the preceding pattern element zero or one times. OR  	Modifies the *, +, or {M,N}'d regexp that comes before to match as few times as possible.*/
-| <OPEN_ROUND_BRACKET: "(">
-| <CLOSE_ROUND_BRACKET: ")">
-| <PLOOKAH: "?="> /* Positive look ahead */
-| <NLOOKAH: "?!"> /* Negative lookahead */
-//| <PLOOKAH: "?<="> /* Positive look behind */
-//| <NLOOKBH: "?<!"> /* Negative look behind */
-| <OPEN_BRACKET: "{">
-| <COMMA: ",">
-| <CLOSE_BRACKET: "}">
-| <OPEN_SQ_BRACKET: "[">
-| <CLOSE_SQ_BRACKET: "]">
-| <ALTERNATE: "|">
-| <WORD_BOUND : "\\b">
-| <NOT_WORD_BOUND : "\\B">   /* not a word boundary */
-| <CARET: "^" > /*  	 start of subject  also after internal newline in multiline mode */
-| <SLASH_CA_A: "\\A"> /*  start of subject */
-| <DOLLAR: "$"> /* end of subject / also before newline at end of subject /also before internal newline in multiline mode */
-| <SLASH_CA_Z: "\\Z"> /*  end of subject /   also before newline at end of subject */
-| <SLASH_Z: "\\z"> /*   end of subject */
-| <SLASH_CA_G: "\\G"> /* first matching position in subject */
-| <SLASH_A: "\\a"> /* alarm, that is, the BEL character (hex 07)*/
-| <SLASH_C: "\\c"> /*          \cx        "control-x", where x is any ASCII character */
-| <ESCAPE: "\\e">
-| <FORM_FEED: "\\f">
-| <NEWLINE: "\\n">
-| <CARRIAGE_RETURN: "\\r">
-| <SLASH_CA_C: "\\C"> /* one data unit, even in UTF mode (best avoided) */
-| <NOT_NEWLINE: "\\N"> 
-| <NEWLINE_SEQ: "\\R">
-| <UNIEGC: "\\X"> /* a Unicode extended grapheme cluster */
-| <PC: "p{C}"> /* Other */
-| <PCC: "p{Cc}"> /*Control */
-| <PCF: "p{Cf}"> /*Format */
-| <PCN: "p{Cn}"> /*Unassigned */
-| <PCO: "p{Co}"> /*Private use */
-| <PCS: "p{Cs}"> /*Surrogate */
-| <PL: "p{L}"> /* Letter */
-| <PLL: "p{Ll}"> /*Lower case letter */
-| <PLM: "p{Lm}"> /*Modifier letter */
-| <PLO: "p{Lo}"> /*Other letter */
-| <PLT: "p{Lt}"> /*Title case letter */
-| <PLU: "p{Lu}"> /*Upper case letter */
-| <PL_COMM: "p{L&}"> /*Ll, Lu, or Lt */
-| <PM: "p{M}"> /* Mark */
-| <PMC: "p{Mc}"> /*Spacing mark */
-| <PME: "p{Me}"> /*Enclosing mark */
-| <PMN: "p{Mn}"> /*Non-spacing mark */
-| <PN: "p{N}"> /* Number */
-| <PND: "p{Nd}"> /*Decimal number */
-| <PNL: "p{Nl}"> /*Letter number */
-| <PNO: "p{No}"> /*Other number */
-| <PP: "p{P}"> /* Punctuation */
-| <PPC: "p{Pc}"> /*Connector punctuation */
-| <PD: "p{Pd}"> /*Dash punctuation */
-| <PE: "p{Pe}"> /*Close punctuation */
-| <PF: "p{Pf}"> /*Final punctuation */
-| <PPI: "p{Pi}"> /*Initial punctuation */
-| <PPO: "p{Po}"> /*Other punctuation */
-| <PPS: "p{Ps}"> /*Open punctuation */
-| <PS: "p{S}"> /* Symbol */
-| <PSC: "p{Sc}"> /*Currency symbol */
-| <PSK: "p{Sk}"> /*Modifier symbol */
-| <PSM: "p{Sm}"> /*Mathematical symbol */
-| <PSO: "p{So}"> /*Other symbol */
-| <PZ: "p{Z}"> /* Separator */
-| <PZL: "p{Zl}"> /*Line separator */
-| <PZP: "p{Zp}"> /*Paragraph separator */
-| <PZS: "p{Zs}"> /*Space separator */
-| <NOTPC: "P{C}"> /* Other */
-| <NOTPCC: "P{Cc}"> /*Control */
-| <NOTPCF: "P{Cf}"> /*Format */
-| <NOTPCN: "P{Cn}"> /*Unassigned */
-| <NOTPCO: "P{Co}"> /*Private use */
-| <NOTPCS: "P{Cs}"> /*Surrogate */
-| <NOTPL: "P{L}"> /* Letter */
-| <NOTPLL: "P{Ll}"> /*Lower case letter */
-| <NOTPLM: "P{Lm}"> /*Modifier letter */
-| <NOTPLO: "P{Lo}"> /*Other letter */
-| <NOTPLT: "P{Lt}"> /*Title case letter */
-| <NOTPLU: "P{Lu}"> /*UPPer case letter */
-| <NOTPL_COMM: "P{L&}"> /*Ll, Lu, or Lt */
-| <NOTPM: "P{M}"> /* Mark */
-| <NOTPMC: "P{Mc}"> /*SPacing mark */
-| <NOTPME: "P{Me}"> /*Enclosing mark */
-| <NOTPMN: "P{Mn}"> /*Non-sPacing mark */
-| <NOTPN: "P{N}"> /* Number */
-| <NOTPND: "P{Nd}"> /*Decimal number */
-| <NOTPNL: "P{Nl}"> /*Letter number */
-| <NOTPNO: "P{No}"> /*Other number */
-| <NOTPP: "P{P}"> /* Punctuation */
-| <NOTPPC: "P{Pc}"> /*Connector Punctuation */
-| <NOTPD: "P{Pd}"> /*Dash Punctuation */
-| <NOTPE: "P{Pe}"> /*Close Punctuation */
-| <NOTPF: "P{Pf}"> /*Final Punctuation */
-| <NOTPPI: "P{Pi}"> /*Initial Punctuation */
-| <NOTPPO: "P{Po}"> /*Other Punctuation */
-| <NOTPPS: "P{Ps}"> /*OPen Punctuation */
-| <NOTPS: "P{S}"> /* Symbol */
-| <NOTPSC: "P{Sc}"> /*Currency symbol */
-| <NOTPSK: "P{Sk}"> /*Modifier symbol */
-| <NOTPSM: "P{Sm}"> /*Mathematical symbol */
-| <NOTPSO: "P{So}"> /*Other symbol */
-| <NOTPZ: "P{Z}"> /* SeParator */
-| <NOTPZL: "P{Zl}"> /*Line seParator */
-| <NOTPZP: "P{ZP}"> /*ParagraPh seParator */
-| <NOTPZS: "P{Zs}"> /*SPace seParator */
-}
-
-
-/*
-*
-*
-* START
-*
-*/
-SimpleNode start():
-{}
-{
- 		   
-       < OPEN_ROUND_BRACKET > <NUMBER > < CLOSE_ROUND_BRACKET >
-       {return jjtThis;}
-}
-
-
