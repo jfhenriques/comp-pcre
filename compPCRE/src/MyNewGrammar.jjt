@@ -76,18 +76,14 @@ SimpleNode Start(): {}
    Expression() "\r" {return jjtThis;}
 }
 
-void Expression():{Token t1, t2;}{(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);}#StartLine)?
-	     (
-	       MainExpression()
-	      )*
-	    (t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);}#EndLine )?
-	   // return jjtThis;
-	    
+void Expression():{Token t1, t2;}{(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
+(MainExpression())*
+(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
+
 }
 void MainExpression() #void:
 {}
 {(Chars()|CharTypes()|AnchorAndSimpleAssertions())(Quantifier())?
-//( Quantifier() #Quantifier  )?
 }
 void Chars():
 {Token t1,t2;}{
