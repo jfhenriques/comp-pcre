@@ -62,7 +62,7 @@ val.dump("");
 | <NOT_NEWLINE: "\\N"> 
 | <NEWLINE_SEQ: "\\R">
 | <UNIEGC: "\\X"> /* a Unicode extended grapheme cluster */
-
+| <RANGE: "-" >
 /* Symbols */
 | <NUMBER: (["0"-"9"])+ >
 | <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
@@ -83,8 +83,21 @@ void Expression():{Token t1, t2;}{(t1 = <CARET > {jjtThis.jjtSetValue (t1.ima
 }
 void MainExpression() #void:
 {}
-{(Chars()|CharTypes()|AnchorAndSimpleAssertions())(Quantifier())?
+{(Chars()|CharTypes()|AnchorAndSimpleAssertions()|Range())(Quantifier())?
 }
+void Range()://SETVALUE NOT ENOUGH; 
+{Token t1,t2,t3,t4,t5,t6;}
+{<OPEN_SQ_BRACKET >
+(t1 = < CARET >)*
+(LOOKAHEAD(2)
+  	(t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
+	| (t2 =< NUMBER > t3= < RANGE > t4=< NUMBER > )
+	| Chars()
+	| CharTypes()
+)+
+<CLOSE_SQ_BRACKET >   
+
+}  
 void Chars():
 {Token t1,t2;}{
   t1 = < CHARACTER >{jjtThis.jjtSetValue (t1.image);} |(t1 =<SLASH>
@@ -112,7 +125,7 @@ void Quantifier():
    	{jjtThis.jjtSetValue (t1.image);}
   )
 |
-(//SETVALUE NOT ENOUGH; ADD VALUE?
+(//SETVALUE NOT ENOUGH; 
   t1 = <OPEN_BRACKET >
   t2 = < NUMBER >
   ((t3 = <CLOSE_BRACKET > )
