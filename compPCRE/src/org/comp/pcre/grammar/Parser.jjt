@@ -29,7 +29,7 @@ while(true)
 SimpleNode val = parser.Start() ;
 System.out.println("Val:"+val.toString());
 val.dump("");
-break;
+//break;
 //ToNFA oi = new ToNFA(val);
 }
 
@@ -51,11 +51,11 @@ TOKEN : /* IDENTIFIERS */
 | <TAB: "\\t">    /* tab */
 | <AST: "*" >
 | <NULL: "\\0">    /* null char */
-| <WHITES: "\\s">     /* any white space character */
-| <NWHITES: "\\S">    /*  any character that is not a white space character */
-| <WORD: "\\w">         /*     any "word" character */
-| <NWORD: "\\W">         /*     any "non-word" character */
-| <ESCAPE: "\\e">
+//| <WHITES: "\\s">     /* any white space character */
+//| <NWHITES: "\\S">    /*  any character that is not a white space character */
+//| <WORD: "\\w">         /*     any "word" character */
+//| <NWORD: "\\W">         /*     any "non-word" character */
+//| <ESCAPE: "\\e">
 | <SLASH: "\\" >
 | <NEWLINE: "\\n">
 | <CARRIAGE_RETURN: "\\r">
@@ -76,13 +76,17 @@ TOKEN : /* IDENTIFIERS */
 | <NUMBER: (["0"-"9"])+ >
 | <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
 | < MISC: "!"|"#"|"$"|"\""|"$"|"'"|"/"|":"|"&"|"="|"«"|"»"|"@"|"<"|">"|"~"|"´"|"`"|"º"|"ª"|"_"|";" >
-
+| < ESCAPED: < SLASH >(< SLASH > | <CARET >|<DOLLAR >|<DOT >
+						|<OPEN_SQ_BRACKET >|<ALTERNATE >|<CLOSE_SQ_BRACKET >
+						|<OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
+						|<INTERROGATION >|<AST >|<PLUS >|< NULL >
+						|< DEC >|< TAB >|< NEWLINE >|< CARRIAGE_RETURN >) >
 }
 
 SimpleNode Start(): {}
 {
    
-   Expression() < LF > {return jjtThis;}
+   Expression() (< LF > | < EOF >) {return jjtThis;}
 }
 
 void Expression() :
@@ -134,15 +138,18 @@ void Chars():
   (
 	  t1 = < CHARACTER >
 	| t1 = < MISC >
+	| t1 = < ESCAPED >
 	) {jjtThis.jjtSetValue (t1.image);}
-	| (t1 =< SLASH >
+
+	/*| (t1 =< SLASH >
 		( t2= < SLASH > | t2= <CARET > | t2= <DOLLAR > | t2= <DOT >
 			| t2= <OPEN_SQ_BRACKET > | t2= <ALTERNATE > | t2= <CLOSE_SQ_BRACKET >
 			| t2= <OPEN_ROUND_BRACKET > | t2= <CLOSE_ROUND_BRACKET >
 			| t2= <INTERROGATION > | t2= <AST > | t2= <PLUS >
-			| t2 = CharTypes() )
+//			| t2 = CharTypes()
+		)
 		{jjtThis.jjtSetValue (t2.image);}
-	)
+	)*/
 }
 
 
@@ -150,8 +157,9 @@ Token CharTypes():
 {Token t = null;}
 {
   (
-	  t = < DOT > | t= < DEC > | t= < WHITES >
-	| t= < NWHITES > | t= < WORD > | t = < NWORD >
+	  t = < DOT >
+//    | t= < DEC > | t= < WHITES >
+	//| t= < NWHITES > | t= < WORD > | t = < NWORD >
 	| t=< NULL > | t = < NEWLINE > | t = < CARRIAGE_RETURN >
   )
   
