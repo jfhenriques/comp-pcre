@@ -23,14 +23,8 @@ throws ParseException, TokenMgrError {
   System.out.println("oi");
 while(true)
 {
-  InputStream is = null;
 
-  try {
-	is = new ByteArrayInputStream( "c:\\windows\n".getBytes( "UTF-8" ) );
-} catch (Exception e) {
-	e.printStackTrace();
-}
-  PCRE parser = new PCRE( is );//System.in ) ;
+  PCRE parser = new PCRE( System.in ) ;
   
 SimpleNode val = parser.Start() ;
 System.out.println("Val:"+val.toString());

@@ -13,7 +13,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "c:\\windows\n".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "c:\\Windows\n".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
