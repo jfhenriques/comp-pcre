@@ -82,20 +82,28 @@ public class NFACreator {
 		if( name.equals("Quantifier") )
 		{
 			System.out.println(level + " Quantifier");
-			String quantifier = node.jjtGetValue().toString();
-
+			QuantifierState quantifier = (QuantifierState) node.jjtGetValue();
 			
-			// considerando apenas o *
-			// if *
-			
-			Connection c = new Connection(queue.last, queue.head);
-			c.cyclic = true;
-			
-			queue.last.connections.add(c);
-			
-			
-			// endif
-			
+			switch(quantifier.type)
+			{
+				case ZERO_OR_MORE:
+					
+					Connection c = new Connection(queue.last, queue.head);
+					c.cyclic = true;
+					
+					queue.last.connections.add(c);
+					
+					break;
+					
+				case AT_LEAST_ONE:
+				case EXACTLY_X:
+				case ZERO_OR_ONE:
+				case RANGED:
+					
+					
+					
+					break;
+			}	
 			
 		}
 		

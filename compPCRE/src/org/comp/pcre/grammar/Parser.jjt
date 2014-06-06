@@ -14,26 +14,24 @@ package org.comp.pcre.grammar;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import org.comp.pcre.automata.QuantifierState;
 
 
 public class PCRE
 {
- public static void main( String[] args )
-throws ParseException, TokenMgrError {
-  System.out.println("oi");
-while(true)
-{
-
-  PCRE parser = new PCRE( System.in ) ;
-  
-SimpleNode val = parser.Start() ;
-System.out.println("Val:"+val.toString());
-val.dump("");
-//break;
-//ToNFA oi = new ToNFA(val);
-}
-
-}
+ 	public static void main( String[] args ) throws ParseException, TokenMgrError {
+		System.out.println("oi");
+		while(true)
+		{
+	
+	  		PCRE parser = new PCRE( System.in ) ;
+	  
+			SimpleNode val = parser.Start() ;
+			System.out.println("Val:"+val.toString());
+			val.dump("");
+	
+		}
+	}
 }
 
 PARSER_END(PCRE)
@@ -137,16 +135,6 @@ void Chars():
 	| t1 = < MISC >
 	| t1 = < ESCAPED >
 	) {jjtThis.jjtSetValue (t1.image);}
-
-	/*| (t1 =< SLASH >
-		( t2= < SLASH > | t2= <CARET > | t2= <DOLLAR > | t2= <DOT >
-			| t2= <OPEN_SQ_BRACKET > | t2= <ALTERNATE > | t2= <CLOSE_SQ_BRACKET >
-			| t2= <OPEN_ROUND_BRACKET > | t2= <CLOSE_ROUND_BRACKET >
-			| t2= <INTERROGATION > | t2= <AST > | t2= <PLUS >
-//			| t2 = CharTypes()
-		)
-		{jjtThis.jjtSetValue (t2.image);}
-	)*/
 }
 
 
@@ -163,34 +151,31 @@ Token CharTypes():
   {jjtThis.jjtSetValue (t.image);return t;}
 }
 
-/*void AnchorAndSimpleAssertions() :
-{Token t;}
-{
-  (
-      t= < WORD_BOUND > | t=  <NOT_WORD_BOUND > | t=  < SLASH_CA_A >
-    | t= < SLASH_CA_Z > | t=  < SLASH_Z >
-    | t= <  SLASH_CA_G >
-   )
-
-   {jjtThis.jjtSetValue (t.image);}
-}*/
 
 void Quantifier():
-{Token t1,t2,t3,t4,t5;}
 {
-  (
+  QuantifierState state = new QuantifierState();
+  jjtThis.jjtSetValue (state);
+  Token t1,t2;
+}
+{
     (
-      	t1 = < AST > 
-  		| t1 = < INTERROGATION >
-  		| t1 = < PLUS >
-  	)
-   	{jjtThis.jjtSetValue (t1.image);}
-  )
-|
-(//SETVALUE NOT ENOUGH; 
-  t1 = <OPEN_BRACKET >
-  t2 = < NUMBER >
-  ((t3 = <CLOSE_BRACKET > )
-  | (t3 = < COMMA > ( (t4 = < CLOSE_BRACKET >) | (t4 = < NUMBER > t5 = <CLOSE_BRACKET >))))
-) 
+      	  ( t1 = < AST > {state.type = QuantifierState.Type.ZERO_OR_MORE; state.setValue(t1.image); })
+     	| ( t1 = < INTERROGATION > {state.type = QuantifierState.Type.ZERO_OR_ONE; state.setValue(t1.image); })
+     	| ( t1 = < PLUS > {state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image); }) 
+  	) | (
+
+	  {state.type = QuantifierState.Type.EXACTLY_X;}
+  	  	  <OPEN_BRACKET >
+	  t1 = < NUMBER >
+	  (
+	    < COMMA >
+	    t2 = < NUMBER >
+
+	    {state.type = QuantifierState.Type.RANGED; state.setMax(t2.image);}
+	  )?
+	  <CLOSE_BRACKET >
+
+	  {state.setValue(t1.image);}
+	)
 }

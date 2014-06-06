@@ -13,8 +13,6 @@ public class State {
 		
 		public Connection(State from, State to)
 		{
-//			if(from == null || to == null)
-//				throw new Exception("from or to cannot be null");
 			
 			this.from = from;
 			this.to = to;
