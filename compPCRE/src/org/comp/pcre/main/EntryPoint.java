@@ -18,7 +18,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "c:\\\\win".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "c:\\\\win(aa)(bb)".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

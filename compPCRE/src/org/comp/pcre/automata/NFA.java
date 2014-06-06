@@ -12,13 +12,17 @@ public class NFA {
 	private NFA()
 	{
 	}
+	
+	private static State globalCurState = null;
 
 	
 	public static State fromSimpleNode(SimpleNode root)
 	{
 		State rootState = new State();
 		
-		iterate(root, rootState);
+		globalCurState = rootState;
+		
+		iterate(root);
 		
 		//GraphViz a = new GraphViz();
 		
@@ -45,9 +49,11 @@ public class NFA {
 	}
 	
 	
-	private static void iterate(SimpleNode root, State curRoot)
+	private static void iterate(SimpleNode root)
 	{
 		SimpleNode nodeChild = null;
+		
+		State curRoot = globalCurState;
 		
 		for(int i=0;i<root.jjtGetNumChildren();i++)
 		{
@@ -61,6 +67,8 @@ public class NFA {
 			{
 				curRoot.connections.add(s);
 				curRoot = s.to;
+				
+				globalCurState = curRoot;
 			}
 			
 			/*if(nodeChild.toString().equals("Expression")){
@@ -77,7 +85,7 @@ public class NFA {
 			}*/
 			
 			if( nodeChild.jjtGetNumChildren() > 0 )
-				iterate(nodeChild, curRoot);
+				iterate(nodeChild);
 		}
 		
 		
