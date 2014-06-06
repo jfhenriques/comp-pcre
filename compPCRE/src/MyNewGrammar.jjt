@@ -1,134 +1,0 @@
-/**
- * JJTree template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  JDK_VERSION = "1.5";  static = false;
-  LOOKAHEAD=1;}PARSER_BEGIN(Adder)
-public class Adder{ public static void main( String[] args )
-throws ParseException, TokenMgrError {
-  System.out.println("oi");
-while(true){  Adder parser = new Adder( System.in ) ;
-SimpleNode val = parser.Start() ;
-System.out.println("Val:"+val.toString());
-val.dump("");
-}
-
-}}PARSER_END(Adder)SKIP :
-{
-" " | "\t" | "\n" 
-}TOKEN : /* IDENTIFIERS */{  <DOT: "."> /* any character except newline /  in dotall mode, any character whatsoever */
-| <DEC: "\\d">    /* any decimal digit */
-| <TAB: "\\t">    /* tab */
-| <AST: "*" >
-| <NULL: "\\0">    /* null char */
-| <NOTDEC: "\\D">     /* any character that is not a decimal digit */
-| <HWHITES: "\\h">     /* any horizontal white space character */
-| <HWHITES_R: "\\K">     /* reset match */
-| <NHWHITES: "\\H">     /* any character that is not a horizontal white space character */
-| <WHITES: "\\s">     /* any white space character */
-| <NWHITES: "\\S">    /*  any character that is not a white space character */
-| <VWHITES: "\\v">        /*      any vertical white space character */
-| <NVWHITES: "\\V">     /* any character that is not a vertical white space character */
-| <WORD: "\\w">         /*     any "word" character */
-| <NWORD: "\\W">         /*     any "non-word" character */
-| <PLUS: "+"> /*  	Matches the preceding pattern element one or more times. */
-| <INTERROGATION: "?"> /* 	Matches the preceding pattern element zero or one times. OR  	Modifies the *, +, or {M,N}'d regexp that comes before to match as few times as possible.*/
-| <OPEN_ROUND_BRACKET: "(">
-| <CLOSE_ROUND_BRACKET: ")">
-| <PLOOKAH: "?="> /* Positive look ahead */
-| <NLOOKAH: "?!"> /* Negative lookahead */
-//| <PLOOKAH: "?<="> /* Positive look behind */
-//| <NLOOKBH: "?<!"> /* Negative look behind */
-| <OPEN_BRACKET: "{"> 
-| <COMMA: ",">
-| <CLOSE_BRACKET: "}" | < COMMA >>
-| <OPEN_SQ_BRACKET: "[">
-| <CLOSE_SQ_BRACKET: "]">
-| <ALTERNATE: "|">
-| <WORD_BOUND : "\\b">
-| <NOT_WORD_BOUND : "\\B">   /* not a word boundary */
-| <CARET: "^" > /*  	 start of subject  also after internal newline in multiline mode */
-| <SLASH_CA_A: "\\A"> /*  start of subject */
-| <DOLLAR: "$"> /* end of subject / also before newline at end of subject /also before internal newline in multiline mode */
-| <SLASH_CA_Z: "\\Z"> /*  end of subject /   also before newline at end of subject */
-| <SLASH_Z: "\\z"> /*   end of subject */
-| <SLASH_CA_G: "\\G"> /* first matching position in subject */
-| <SLASH_A: "\\a"> /* alarm, that is, the BEL character (hex 07)*/
-| <SLASH_C: "\\c"> /*          \cx        "control-x", where x is any ASCII character */
-| <ESCAPE: "\\e">
-| <SLASH: "\\" >
-| <FORM_FEED: "\\f">
-| <NEWLINE: "\\n">
-| <CARRIAGE_RETURN: "\\r">
-| <SLASH_CA_C: "\\C"> /* one data unit, even in UTF mode (best avoided) */
-| <NOT_NEWLINE: "\\N"> 
-| <NEWLINE_SEQ: "\\R">
-| <UNIEGC: "\\X"> /* a Unicode extended grapheme cluster */
-| <RANGE: "-" >
-/* Symbols */
-| <NUMBER: (["0"-"9"])+ >
-| <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
-
-
-}
-
-SimpleNode Start(): {}
-{
-   
-   Expression() "\r" {return jjtThis;}
-}
-
-void Expression():{Token t1, t2;}{(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
-(MainExpression())*
-(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
-
-}
-void MainExpression() #void:
-{}
-{(Chars()|CharTypes()|AnchorAndSimpleAssertions()|Range())(Quantifier())?
-}
-void Range()://SETVALUE NOT ENOUGH; 
-{Token t1,t2,t3,t4,t5,t6;}
-{<OPEN_SQ_BRACKET >
-(t1 = < CARET >)*
-(LOOKAHEAD(2)
-  	(t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
-	| (t2 =< NUMBER > t3= < RANGE > t4=< NUMBER > )
-	| Chars()
-	| CharTypes()
-)+
-<CLOSE_SQ_BRACKET >   
-
-}  
-void Chars():
-{Token t1,t2;}{
-  t1 = < CHARACTER >{jjtThis.jjtSetValue (t1.image);} |(t1 =<SLASH>
-(t2= < SLASH > | t2= <CARET > | t2= <DOLLAR > | t2= <DOT >  | t2= <OPEN_SQ_BRACKET > | t2= <ALTERNATE > | t2= <CLOSE_SQ_BRACKET > | t2= <OPEN_ROUND_BRACKET > | t2= <CLOSE_ROUND_BRACKET > | t2= <INTERROGATION > | t2= <AST > | t2= <PLUS > )
-{jjtThis.jjtSetValue (t2.image);}
-)
-}
-void CharTypes():
-{Token t;}{t = < DOT > | t= < SLASH_CA_C > | t= < DEC > | t= < NOTDEC > | t= < HWHITES > | t= < NHWHITES > | t= < NOT_NEWLINE > | t= < NEWLINE_SEQ > | t= < WHITES > | t= < NWHITES > | t= < VWHITES > | t= < NVWHITES > | t= < WORD > | t=< NWORD > {jjtThis.jjtSetValue (t.image);}
-}
-
-void AnchorAndSimpleAssertions() :
-{Token t;}
-{
-  t= < WORD_BOUND > | t=  <NOT_WORD_BOUND > | t=  < SLASH_CA_A > | t=  < SLASH_CA_Z > | t=  < SLASH_Z > |t=  <  SLASH_CA_G > {jjtThis.jjtSetValue (t.image);}}
-
-void Quantifier():
-{Token t1,t2,t3,t4,t5;}
-{
-  (
-    (      	t1 = < AST > 
-  		| t1 = < INTERROGATION >
-  		| t1 = < PLUS >
-  	)
-   	{jjtThis.jjtSetValue (t1.image);}
-  )
-|
-(//SETVALUE NOT ENOUGH; 
-  t1 = <OPEN_BRACKET >
-  t2 = < NUMBER >
-  ((t3 = <CLOSE_BRACKET > )
-  | (t3 = < COMMA > ( (t4 = < CLOSE_BRACKET >) | (t4 = < NUMBER > t5 = <CLOSE_BRACKET >))))
-) 
-}

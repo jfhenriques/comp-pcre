@@ -1,3 +1,4 @@
 compPCRE/bin
 compPCRE/src/org/comp/pcre/grammar/*.java
 compPCRE/src/org/comp/pcre/grammar/*.jj
+*.class
