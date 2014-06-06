@@ -12,6 +12,10 @@ PARSER_BEGIN(PCRE)
 
 package org.comp.pcre.grammar;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+
 public class PCRE
 {
  public static void main( String[] args )
@@ -19,11 +23,19 @@ throws ParseException, TokenMgrError {
   System.out.println("oi");
 while(true)
 {
-  PCRE parser = new PCRE( System.in ) ;
+  InputStream is = null;
+
+  try {
+	is = new ByteArrayInputStream( "c:\\windows\n".getBytes( "UTF-8" ) );
+} catch (Exception e) {
+	e.printStackTrace();
+}
+  PCRE parser = new PCRE( is );//System.in ) ;
   
 SimpleNode val = parser.Start() ;
 System.out.println("Val:"+val.toString());
 val.dump("");
+break;
 //ToNFA oi = new ToNFA(val);
 }
 
@@ -45,49 +57,26 @@ TOKEN : /* IDENTIFIERS */
 | <TAB: "\\t">    /* tab */
 | <AST: "*" >
 | <NULL: "\\0">    /* null char */
-| <NOTDEC: "\\D">     /* any character that is not a decimal digit */
-| <HWHITES: "\\h">     /* any horizontal white space character */
-| <HWHITES_R: "\\K">     /* reset match */
-| <NHWHITES: "\\H">     /* any character that is not a horizontal white space character */
 | <WHITES: "\\s">     /* any white space character */
 | <NWHITES: "\\S">    /*  any character that is not a white space character */
-| <VWHITES: "\\v">        /*      any vertical white space character */
-| <NVWHITES: "\\V">     /* any character that is not a vertical white space character */
 | <WORD: "\\w">         /*     any "word" character */
 | <NWORD: "\\W">         /*     any "non-word" character */
+| <ESCAPE: "\\e">
+| <SLASH: "\\" >
+| <NEWLINE: "\\n">
+| <CARRIAGE_RETURN: "\\r">
 | <PLUS: "+"> /*  	Matches the preceding pattern element one or more times. */
 | <INTERROGATION: "?"> /* 	Matches the preceding pattern element zero or one times. OR  	Modifies the *, +, or {M,N}'d regexp that comes before to match as few times as possible.*/
 | <OPEN_ROUND_BRACKET: "(">
 | <CLOSE_ROUND_BRACKET: ")">
-| <PLOOKAH: "?="> /* Positive look ahead */
-| <NLOOKAH: "?!"> /* Negative lookahead */
-//| <PLOOKAH: "?<="> /* Positive look behind */
-//| <NLOOKBH: "?<!"> /* Negative look behind */
 | <OPEN_BRACKET: "{"> 
 | <COMMA: ",">
 | <CLOSE_BRACKET: "}">
 | <OPEN_SQ_BRACKET: "[">
 | <CLOSE_SQ_BRACKET: "]">
 | <ALTERNATE: "|">
-| <WORD_BOUND : "\\b">
-| <NOT_WORD_BOUND : "\\B">   /* not a word boundary */
 | <CARET: "^" > /*  	 start of subject  also after internal newline in multiline mode */
-| <SLASH_CA_A: "\\A"> /*  start of subject */
 | <DOLLAR: "$"> /* end of subject / also before newline at end of subject /also before internal newline in multiline mode */
-| <SLASH_CA_Z: "\\Z"> /*  end of subject /   also before newline at end of subject */
-| <SLASH_Z: "\\z"> /*   end of subject */
-| <SLASH_CA_G: "\\G"> /* first matching position in subject */
-| <SLASH_A: "\\a"> /* alarm, that is, the BEL character (hex 07)*/
-| <SLASH_C: "\\c"> /*          \cx        "control-x", where x is any ASCII character */
-| <ESCAPE: "\\e">
-| <SLASH: "\\" >
-| <FORM_FEED: "\\f">
-| <NEWLINE: "\\n">
-| <CARRIAGE_RETURN: "\\r">
-| <SLASH_CA_C: "\\C"> /* one data unit, even in UTF mode (best avoided) */
-| <NOT_NEWLINE: "\\N"> 
-| <NEWLINE_SEQ: "\\R">
-| <UNIEGC: "\\X"> /* a Unicode extended grapheme cluster */
 | <RANGE: "-" >
 /* Symbols */
 | <NUMBER: (["0"-"9"])+ >
@@ -113,9 +102,8 @@ void Expression() :
 void MainExpression() #void:
 {}
 {
-(
-  ( ORexp() | Chars() | ExpPRT() |CharTypes()|AnchorAndSimpleAssertions()|Range())(Quantifier())?
-  )
+  ( ORexp() | Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?
+
 }
 void ExpPRT() #PRT:
 {}
@@ -134,11 +122,11 @@ void Range()://SETVALUE NOT ENOUGH;
 {
 <OPEN_SQ_BRACKET >
 (t1 = < CARET >)*
-(LOOKAHEAD(2)
-  	(t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
+(//LOOKAHEAD(2)
+	  (t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
 	| (t2 =< NUMBER > t3= < RANGE > t4=< NUMBER > )
-	| CharTypes()
 	| Chars()
+	| CharTypes()
 )+
 <CLOSE_SQ_BRACKET >
    
@@ -153,29 +141,30 @@ void Chars():
 	  t1 = < CHARACTER >
 	| t1 = < MISC >
 	) {jjtThis.jjtSetValue (t1.image);}
-	| (t1 =<SLASH>
-		(t2= < SLASH > | t2= <CARET > | t2= <DOLLAR > | t2= <DOT >
+	| (t1 =< SLASH >
+		( t2= < SLASH > | t2= <CARET > | t2= <DOLLAR > | t2= <DOT >
 			| t2= <OPEN_SQ_BRACKET > | t2= <ALTERNATE > | t2= <CLOSE_SQ_BRACKET >
 			| t2= <OPEN_ROUND_BRACKET > | t2= <CLOSE_ROUND_BRACKET >
-			| t2= <INTERROGATION > | t2= <AST > | t2= <PLUS > )
+			| t2= <INTERROGATION > | t2= <AST > | t2= <PLUS >
+			| t2 = CharTypes() )
 		{jjtThis.jjtSetValue (t2.image);}
 	)
 }
 
-void CharTypes():
-{Token t;}
+
+Token CharTypes():
+{Token t = null;}
 {
   (
-	  t = < DOT > | t= < SLASH_CA_C > | t= < DEC > | t= < NOTDEC > | t= < HWHITES >
-	| t= < NHWHITES > | t= < NOT_NEWLINE > | t= < NEWLINE_SEQ > | t= < WHITES >
-	| t= < NWHITES > | t= < VWHITES > | t= < NVWHITES > | t= < WORD >
-	| t=< NWORD >
+	  t = < DOT > | t= < DEC > | t= < WHITES >
+	| t= < NWHITES > | t= < WORD > | t = < NWORD >
+	| t=< NULL > | t = < NEWLINE > | t = < CARRIAGE_RETURN >
   )
   
-  {jjtThis.jjtSetValue (t.image);}
+  {jjtThis.jjtSetValue (t.image);return t;}
 }
 
-void AnchorAndSimpleAssertions() :
+/*void AnchorAndSimpleAssertions() :
 {Token t;}
 {
   (
@@ -185,7 +174,7 @@ void AnchorAndSimpleAssertions() :
    )
 
    {jjtThis.jjtSetValue (t.image);}
-}
+}*/
 
 void Quantifier():
 {Token t1,t2,t3,t4,t5;}
