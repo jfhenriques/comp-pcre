@@ -2,7 +2,6 @@ package org.comp.pcre.automata;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.comp.pcre.automata.State.Connection;
 import org.comp.pcre.automata.State;
@@ -21,7 +20,7 @@ public class GraphHelper {
 		{
 			array.add(c);
 			
-			if( c.to != null )
+			if( c.to != null && !c.cyclic )
 				dumpConnectionsToSingleArray(c.to, array);
 		}
 	}
@@ -38,7 +37,7 @@ public class GraphHelper {
 		{
 			connections.add(c);
 			
-			if( c.to != null )
+			if( c.to != null  )
 				dumpConnectionsToSingleArray(c.to, connections);
 		}
 		

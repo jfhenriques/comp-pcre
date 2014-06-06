@@ -92,12 +92,11 @@ SimpleNode Start(): {}
 void Expression() :
 {Token t1, t2;}
 {
-(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
-(MainExpression())*
-(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
-
+	(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
+	(Element())*
+	(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
 }
-void MainExpression() #void:
+void Element() :
 {}
 {
   ( ORexp() | Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?
@@ -106,7 +105,7 @@ void MainExpression() #void:
 void ExpPRT() #PRT:
 {}
 {
-  <OPEN_ROUND_BRACKET > Expression() <CLOSE_ROUND_BRACKET > #close 
+  <OPEN_ROUND_BRACKET > Expression() <CLOSE_ROUND_BRACKET > //#close 
 }
 
 void ORexp() #void:
@@ -118,20 +117,18 @@ void ORexp() #void:
 void Range()://SETVALUE NOT ENOUGH; 
 {Token t1,t2,t3,t4,t5,t6;}
 {
-<OPEN_SQ_BRACKET >
-(t1 = < CARET >)*
-(//LOOKAHEAD(2)
-	  (t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
-	| (t2 =< NUMBER > t3= < RANGE > t4=< NUMBER > )
-	| Chars()
-	| CharTypes()
-)+
-<CLOSE_SQ_BRACKET >
-   
-
+	<OPEN_SQ_BRACKET >
+	(t1 = < CARET >)*
+	(//LOOKAHEAD(2)
+		  (t2 =< CHARACTER > t3= < RANGE > t4=< CHARACTER > )
+		| (t2 =< NUMBER > t3= < RANGE > t4=< NUMBER > )
+		| Chars()
+		| CharTypes()
+	)+
+	<CLOSE_SQ_BRACKET >
 }
 
-  
+
 void Chars():
 {Token t1,t2;}
 {

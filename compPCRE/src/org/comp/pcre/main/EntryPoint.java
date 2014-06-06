@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.comp.pcre.automata.GraphHelper;
-import org.comp.pcre.automata.NFA;
+import org.comp.pcre.automata.NFACreator;
 import org.comp.pcre.automata.State;
 import org.comp.pcre.automata.State.Connection;
 import org.comp.pcre.grammar.PCRE;
@@ -18,7 +18,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "c:\\\\win(aa)(bb)".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "http:\\\\\\\\www".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,8 +29,8 @@ public class EntryPoint {
 		  root.dump("");
 		  
 		  
-		  
-		  State nfaRoot = NFA.fromSimpleNode(root);
+		  NFACreator creator = new NFACreator();
+		  State nfaRoot = creator.fromSimpleNode(root);
 		  ArrayList<Connection> allConns = new ArrayList<Connection>();
 		  ArrayList<State> allStates = new ArrayList<State>();
 		  GraphHelper.dumpSingleArrayS(nfaRoot, allConns, allStates);

@@ -9,6 +9,7 @@ public class State {
 		public String character = null;
 		public State to = null;
 		public State from = null;
+		public boolean cyclic = false;
 		
 		public Connection(State from, State to)
 		{
