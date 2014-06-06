@@ -54,6 +54,18 @@ public class NFACreator {
 		return rootState;
 	}
 	
+	
+	private StateQueue replicateStateSequence(StateQueue state)
+	{
+		State head = new State();
+		StateQueue newStateQueue = new StateQueue(head);
+		
+		
+		
+		
+		
+		return newStateQueue;
+	}
 
 	
 	

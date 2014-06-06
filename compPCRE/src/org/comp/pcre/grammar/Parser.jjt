@@ -12,8 +12,6 @@ PARSER_BEGIN(PCRE)
 
 package org.comp.pcre.grammar;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import org.comp.pcre.automata.QuantifierState;
 
 
