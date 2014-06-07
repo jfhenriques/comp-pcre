@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.comp.pcre.automata.GraphHelper;
 import org.comp.pcre.automata.NFACreator;
 import org.comp.pcre.automata.State;
+import org.comp.pcre.automata.NFACreator.StateQueue;
 import org.comp.pcre.automata.State.Connection;
 import org.comp.pcre.grammar.PCRE;
 import org.comp.pcre.grammar.ParseException;
@@ -18,7 +19,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "a+".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "(a{1,3}){0,3}".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,12 +32,12 @@ public class EntryPoint {
 		  
 		  NFACreator creator = new NFACreator();
 		  
-		  State nfaRoot = creator.fromSimpleNode(root);
+		  StateQueue state = creator.fromSimpleNode(root);
 		  ArrayList<Connection> allConns = new ArrayList<Connection>();
 		  ArrayList<State> allStates = new ArrayList<State>();
 		  
-		  GraphHelper.dumpSingleArrayS(nfaRoot, allConns, allStates);
-		  GraphHelper.generateGraph(allConns, allStates, "out", "png", true);
+		  GraphHelper.dumpSingleArrayS(state.getHead(), allConns, allStates);
+		  GraphHelper.generateGraph(allConns, allStates, state.getTail(), "out", "png", true);
 		
 		
 	}

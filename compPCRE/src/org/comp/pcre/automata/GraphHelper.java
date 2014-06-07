@@ -56,6 +56,7 @@ public class GraphHelper {
 	
 	public static void generateGraph(ArrayList<Connection> connections,
 										ArrayList<State> states,
+										State endState,
 										String filename, String type, Boolean printConsole) 
     {
        // String finalStates = "";
@@ -77,7 +78,7 @@ public class GraphHelper {
 //
 //        if ( !finalStates.equals("") )
 //        	gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + finalStates + ";");
-        gv.addln("node [shape = doublecircle, color=black, fontcolor=black];");
+        gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + endState.name);
 
         gv.addln("node [shape = circle];");
         gv.addln("start -> 0;");

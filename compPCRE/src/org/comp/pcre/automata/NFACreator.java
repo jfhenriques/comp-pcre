@@ -12,15 +12,25 @@ import org.comp.pcre.grammar.SimpleNode;
 
 public class NFACreator {
 
-	private static class StateQueue
+	public static class StateQueue
 	{
-		final State head;
-		State last = null;
+		protected final State head;
+		protected State last = null;
 		
 		public StateQueue(State head)
 		{
 			this.head = head; 
 			this.last = head;
+		}
+		
+		public State getHead()
+		{
+			return head;
+		}
+		
+		public State getTail()
+		{
+			return last;
 		}
 	}
 	
@@ -43,17 +53,15 @@ public class NFACreator {
 	}
 
 	
-	public State fromSimpleNode(SimpleNode root)
+	public StateQueue fromSimpleNode(SimpleNode root)
 	{
 		this.reset();
 		
-		State rootState = new State();
-		
-		stateQueue.addFirst(new StateQueue(rootState));
+		stateQueue.addFirst(new StateQueue(new State()));
 		
 		iterate(root);
 		
-		return rootState;
+		return stateQueue.element();
 	}
 	
 	
