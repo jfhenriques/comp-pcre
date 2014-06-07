@@ -73,9 +73,6 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case DOT:
-        case NULL:
-        case NEWLINE:
-        case CARRIAGE_RETURN:
         case OPEN_ROUND_BRACKET:
         case CHARACTER:
         case MISC:
@@ -137,9 +134,6 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
         ExpPRT();
         break;
       case DOT:
-      case NULL:
-      case NEWLINE:
-      case CARRIAGE_RETURN:
         CharTypes();
         break;
       default:
@@ -287,24 +281,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
  boolean jjtc000 = true;
  jjtree.openNodeScope(jjtn000);Token t = null;
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case DOT:
-        t = jj_consume_token(DOT);
-        break;
-      case NULL:
-        t = jj_consume_token(NULL);
-        break;
-      case NEWLINE:
-        t = jj_consume_token(NEWLINE);
-        break;
-      case CARRIAGE_RETURN:
-        t = jj_consume_token(CARRIAGE_RETURN);
-        break;
-      default:
-        jj_la1[6] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      t = jj_consume_token(DOT);
     jjtree.closeNodeScope(jjtn000, true);
     jjtc000 = false;
    jjtn000.jjtSetValue (t.image);{if (true) return t;}
@@ -348,7 +325,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
                            state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image);
           break;
         default:
-          jj_la1[7] = jj_gen;
+          jj_la1[6] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -364,7 +341,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
              state.type = QuantifierState.Type.RANGED; state.setMax(t2.image);
           break;
         default:
-          jj_la1[8] = jj_gen;
+          jj_la1[7] = jj_gen;
           ;
         }
         jj_consume_token(CLOSE_BRACKET);
@@ -373,7 +350,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
            state.setValue(t1.image);
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[8] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -393,13 +370,13 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[10];
+  final private int[] jj_la1 = new int[9];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x21,0x38009a10,0x400000,0x38009a10,0x26100,0x38000000,0x1a10,0x6100,0x40000,0x26100,};
+      jj_la1_0 = new int[] {0x21,0x7001010,0x80000,0x7001010,0x4c40,0x7000000,0xc40,0x8000,0x4c40,};
    }
 
   /** Constructor with InputStream. */
@@ -413,7 +390,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -428,7 +405,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -438,7 +415,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -449,7 +426,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -458,7 +435,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -468,7 +445,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -519,12 +496,12 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[30];
+    boolean[] la1tokens = new boolean[27];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 9; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -533,7 +510,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
         }
       }
     }
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < 27; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

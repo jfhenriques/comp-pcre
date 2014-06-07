@@ -10,6 +10,7 @@ public class State {
 		public State to = null;
 		public State from = null;
 		public boolean cyclic = false;
+		public boolean isAnyChar = false;
 		
 		public Connection(State from, State to)
 		{
@@ -35,7 +36,7 @@ public class State {
 	{
 		for(Connection cc: connections)
 		{
-			if(    to.name == cc.to.name 
+			if(    ( cc.to != null && to.name == cc.to.name ) 
 				&& (     ( character == null && cc.character == null )
 				      || ( character != null && character.equals(cc.character) ) ) )
 			{

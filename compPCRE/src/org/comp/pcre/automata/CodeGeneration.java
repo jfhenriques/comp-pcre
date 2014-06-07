@@ -16,7 +16,7 @@ import org.comp.pcre.automata.State.Connection;
 
 public class CodeGeneration {
 
-	/*
+	///*
 	public static class InvalidStateException extends Exception
 	{
 		private static final long serialVersionUID = -3540825325077073436L;
@@ -26,6 +26,10 @@ public class CodeGeneration {
 		public long state = -1; public String character = null;
 		public Transition(long state, String character)
 		{ this.state = state; this.character = character; }
+	}
+	public static class AnyTransition extends Transition {
+		public AnyTransition(long state, String character)
+		{ super(state,character); }
 	}
 	
 	public static boolean isFinal(long state)
@@ -57,7 +61,7 @@ public class CodeGeneration {
 		if(_states == null) throw new InvalidStateException("Invalid state transition");
 		if( !isFinalChar ) {
 			for(Transition t: _states) {
-				if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {
+				if( t.getClass() == AnyTransition.class || ( t.character != null && str.charAt(pos) == t.character.charAt(0) ) ) {
 					System.out.println("Pos["+pos+"]"+t.state+"-"+t.character);
 					if( accept(str, pos + 1, total, t.state) ) return true;
 				}
@@ -113,7 +117,7 @@ public class CodeGeneration {
 			System.out.println("-> Input could not be accepted");
 		}
 	}
-	*/
+	//*/
 	
 	
 	
@@ -160,7 +164,7 @@ public class CodeGeneration {
 			else
 				cchar = "\"" + c.character + "\"";
 			
-			apd(0, "new Transition(" + c.to.name + "L," + cchar + ")," );
+			apd(0, "new " + (c.isAnyChar ? "Any" : "")+ "Transition(" + c.to.name + "L," + cchar + ")," );
 		}
 		apd(0, "});\n");
 	}
@@ -197,15 +201,19 @@ public class CodeGeneration {
 			apd(2, "private static final long serialVersionUID = -3540825325077073436L;\n");
 			apd(2, "public InvalidStateException(String message) { super(message); }\n\t}\n\n");
 			
-			apd(2, "public static boolean isFinal(long state)\n");
-			apd(2, "{ return _finalMap.contains(state); }\n\n");
-			
 			apd(1, "public static class Transition {\n");
 			apd(2, "public long state = -1; public String character = null;\n");
 			apd(2, "public Transition(long state, String character)\n");
 			apd(2, "{ this.state = state; this.character = character; }\n");
 			apd(1, "}\n\n");
 			
+			apd(1, "public static class AnyTransition extends Transition {\n");
+			apd(2, "public AnyTransition(long state, String character)\n");
+			apd(2, "{ super(state,character); }\n");
+			apd(1, "}\n\n");
+			
+			apd(2, "public static boolean isFinal(long state)\n");
+			apd(2, "{ return _finalMap.contains(state); }\n\n");
 			
 			apd(1, "private static boolean putNull(int pos, long state) {\n");
 			apd(2, "ArrayList<Long> list = _nullStates.get(pos);\n");
@@ -225,7 +233,7 @@ public class CodeGeneration {
 			apd(2, "if(_states == null) throw new InvalidStateException(\"Invalid state transition\");\n");
 			apd(2, "if( !isFinalChar ) {\n");
 			apd(3, "for(Transition t: _states) {\n");
-			apd(4, "if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {\n");
+			apd(4, "if( t.getClass() == AnyTransition.class || ( t.character != null && str.charAt(pos) == t.character.charAt(0) ) ) {\n");
 			apd(5, "//System.out.println(\"Pos[\"+pos+\"]\"+t.state+\"-\"+t.character);\n");
 			apd(5, "if( accept(str, pos + 1, total, t.state) ) return true;\n");
 			apd(4, "}\n");
@@ -258,7 +266,7 @@ public class CodeGeneration {
 			apd(2, "BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n");
 			apd(2, "while(true) {\n");
 			apd(3, "_nullStates.clear();\n");
-			apd(3, "System.out.println(\"Accepting expression: " + expression + "\");\n");
+			apd(3, "System.out.println(\"Accepting expression: " + expression.replaceAll("\\\\", "\\\\\\\\") + "\");\n");
 			apd(3, "String toAccept = br.readLine();\n");
 			apd(3, "try {\n");
 			apd(4, "if( accept(toAccept, 0, toAccept.length(), 0) ) {\n");

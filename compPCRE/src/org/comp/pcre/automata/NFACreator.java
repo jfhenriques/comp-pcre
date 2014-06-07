@@ -136,7 +136,19 @@ public class NFACreator {
 
 	
 	
-	
+	private static void _connectAll(StateQueue queue, State s, String str)
+	{
+		if( queue.toConnect.size() > 0 )
+		{
+			for(State st: queue.toConnect)
+			{
+				st.isFinal = false;
+				st.connect(s, str, false);
+			}
+			
+			queue.toConnect.clear();
+		}
+	}
 	private void analysis(SimpleNode node) throws ParseException
 	{
 		if( node == null || node.jjtGetValue() == null)
@@ -151,16 +163,7 @@ public class NFACreator {
 			
 			State s = new State();
 			
-			if( queue.toConnect.size() > 0 )
-			{
-				for(State st: queue.toConnect)
-				{
-					st.isFinal = false;
-					st.connect(s, node.jjtGetValue().toString(), false);
-				}
-				
-				queue.toConnect.clear();
-			}
+			_connectAll(queue, s, node.jjtGetValue().toString());
 			
 			queue.last.connect(s, node.jjtGetValue().toString(), false);
 			queue.last = s;
@@ -169,9 +172,29 @@ public class NFACreator {
 //		if( name.equals("Expression") )
 //		{
 //			State s = new State();
-//			queue.last.connect(s, null, false);
+//			
+//
+//			
+//			queue.last.connect(s, "aa", false);
 //			queue.last = s;
 //		}
+		else
+		if( name.equals("CharTypes") )
+		{
+			if(node.jjtGetValue().toString().equals("."))
+			{
+				State s = new State();
+				
+				_connectAll(queue, s, node.jjtGetValue().toString());
+
+				Connection nC = queue.last.connect(s, "<ANY>", false);
+				
+				nC.isAnyChar = true;
+				queue.last = s;
+			}
+			else
+				throw new ParseException("Invalid character received");
+		}
 		else
 		if( name.equals("Quantifier") )
 		{
@@ -227,17 +250,17 @@ public class NFACreator {
 
 			State newQueueLast = queue.last;
 			
-			ArrayList<State> toConnect = new ArrayList<State>();
+			ArrayList<State> ttttoConnect = new ArrayList<State>();
 			
 			if( start == 0 )
-				toConnect.add(queue.head);
+				ttttoConnect.add(queue.head);
 			
 			for(long i = 1; i < end; i++)
 			{
 				StateQueue newQueue = replicateStateSequence(queue);
 				
 				if( i >= start && i < end )
-					toConnect.add(newQueue.head);
+					ttttoConnect.add(newQueue.head);
 				
 				newQueueLast.connect(newQueue.head, null, false);
 				
@@ -245,9 +268,10 @@ public class NFACreator {
 			}
 			queue.last = newQueueLast;
 			
-			for(State s : toConnect)
+			for(State s : ttttoConnect)
 			{
-				s.connect(queue.last, null, true);
+				if( queue.last != null )
+					s.connect(queue.last, null, true);
 			}
 			
 		}
@@ -313,11 +337,11 @@ public class NFACreator {
 //					cur.toConnect.clear();
 //				}
 				
-				if( isOR )
-				{
-					cur.last.isFinal = true;
-					cur.orQueue.add(cur.last);
-				}
+//				if( isOR )
+//				{
+//					cur.last.isFinal = true;
+//					cur.orQueue.add(cur.last);
+//				}
 				
 				StateQueue last = stateQueue.remove();
 				if( last != null )

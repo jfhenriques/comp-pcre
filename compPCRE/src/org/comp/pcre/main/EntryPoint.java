@@ -20,7 +20,8 @@ public class EntryPoint {
 	public static void main( String[] args ) throws ParseException
 	{ 
 		InputStream is = null;
-		String expression = "(a(bc*d)*e){0,2}";
+		String expression = "a.*c";
+		//String expression = "http://(www|blog)\\.algumavez\\.com";
 		try {
 			is = new ByteArrayInputStream( expression.getBytes( "UTF-8" ) );
 		} catch (Exception e) {

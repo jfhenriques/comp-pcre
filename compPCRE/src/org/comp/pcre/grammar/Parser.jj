@@ -47,10 +47,10 @@ TOKEN : /* IDENTIFIERS */
 {
   <DOT: "."> /* any character except newline /  in dotall mode, any character whatsoever */
 | <LF: "\n">    
-| <DEC: "\\d">    /* any decimal digit */
-| <TAB: "\\t">    /* tab */
+//| <DEC: "\\d">    /* any decimal digit */
+//| <TAB: "\\t">    /* tab */
 | <AST: "*" >
-| <NULL: "\\0">    /* null char */
+//| <NULL: "\\0">    /* null char */
 //| <WHITES: "\\s">     /* any white space character */
 //| <NWHITES: "\\S">    /*  any character that is not a white space character */
 //| <WORD: "\\w">         /*     any "word" character */
@@ -80,8 +80,9 @@ TOKEN : /* IDENTIFIERS */
 						|<OPEN_SQ_BRACKET >|< CLOSE_SQ_BRACKET ><ALTERNATE >
 						| <OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
 						| < OPEN_BRACKET > | < CLOSE_BRACKET >
-						|<INTERROGATION >|<AST >|<PLUS >|< NULL >
-						|< DEC >|< TAB >|< NEWLINE >|< CARRIAGE_RETURN >) >
+						|<INTERROGATION >|<AST >|<PLUS >
+						//|< NULL > |< DEC >|< TAB >|< NEWLINE >|< CARRIAGE_RETURN >
+						) >
 }
 
 SimpleNode Start(): {/*@bgen(jjtree) Start */
@@ -306,9 +307,9 @@ Token CharTypes():
 /*@egen*/
   (
 	  t = < DOT >
-//    | t= < DEC > | t= < WHITES >
+	//| t= < DEC > | t= < WHITES >
 	//| t= < NWHITES > | t= < WORD > | t = < NWORD >
-	| t=< NULL > | t = < NEWLINE > | t = < CARRIAGE_RETURN >
+	//| t=< NULL > | t = < NEWLINE > | t = < CARRIAGE_RETURN >
   )/*@bgen(jjtree)*/
   {
     jjtree.closeNodeScope(jjtn000, true);

@@ -15,53 +15,47 @@ public interface PCREConstants {
   /** RegularExpression Id. */
   int LF = 5;
   /** RegularExpression Id. */
-  int DEC = 6;
+  int AST = 6;
   /** RegularExpression Id. */
-  int TAB = 7;
+  int SLASH = 7;
   /** RegularExpression Id. */
-  int AST = 8;
+  int NEWLINE = 8;
   /** RegularExpression Id. */
-  int NULL = 9;
+  int CARRIAGE_RETURN = 9;
   /** RegularExpression Id. */
-  int SLASH = 10;
+  int PLUS = 10;
   /** RegularExpression Id. */
-  int NEWLINE = 11;
+  int INTERROGATION = 11;
   /** RegularExpression Id. */
-  int CARRIAGE_RETURN = 12;
+  int OPEN_ROUND_BRACKET = 12;
   /** RegularExpression Id. */
-  int PLUS = 13;
+  int CLOSE_ROUND_BRACKET = 13;
   /** RegularExpression Id. */
-  int INTERROGATION = 14;
+  int OPEN_BRACKET = 14;
   /** RegularExpression Id. */
-  int OPEN_ROUND_BRACKET = 15;
+  int COMMA = 15;
   /** RegularExpression Id. */
-  int CLOSE_ROUND_BRACKET = 16;
+  int CLOSE_BRACKET = 16;
   /** RegularExpression Id. */
-  int OPEN_BRACKET = 17;
+  int OPEN_SQ_BRACKET = 17;
   /** RegularExpression Id. */
-  int COMMA = 18;
+  int CLOSE_SQ_BRACKET = 18;
   /** RegularExpression Id. */
-  int CLOSE_BRACKET = 19;
+  int ALTERNATE = 19;
   /** RegularExpression Id. */
-  int OPEN_SQ_BRACKET = 20;
+  int CARET = 20;
   /** RegularExpression Id. */
-  int CLOSE_SQ_BRACKET = 21;
+  int DOLLAR = 21;
   /** RegularExpression Id. */
-  int ALTERNATE = 22;
+  int RANGE = 22;
   /** RegularExpression Id. */
-  int CARET = 23;
+  int NUMBER = 23;
   /** RegularExpression Id. */
-  int DOLLAR = 24;
+  int CHARACTER = 24;
   /** RegularExpression Id. */
-  int RANGE = 25;
+  int MISC = 25;
   /** RegularExpression Id. */
-  int NUMBER = 26;
-  /** RegularExpression Id. */
-  int CHARACTER = 27;
-  /** RegularExpression Id. */
-  int MISC = 28;
-  /** RegularExpression Id. */
-  int ESCAPED = 29;
+  int ESCAPED = 26;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -74,10 +68,7 @@ public interface PCREConstants {
     "\"\\r\"",
     "\".\"",
     "\"\\n\"",
-    "\"\\\\d\"",
-    "\"\\\\t\"",
     "\"*\"",
-    "\"\\\\0\"",
     "\"\\\\\"",
     "\"\\\\n\"",
     "\"\\\\r\"",
