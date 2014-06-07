@@ -165,10 +165,10 @@ public class NFACreator {
 			queue.last = s;
 		}
 //		else
-//		if( name.equals("PRT") )
+//		if( name.equals("Expression") )
 //		{
 //			State s = new State();
-//			queue.last.connect(s, "aa", false);
+//			queue.last.connect(s, null, false);
 //			queue.last = s;
 //		}
 		else

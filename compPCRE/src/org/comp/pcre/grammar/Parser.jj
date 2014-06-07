@@ -77,8 +77,9 @@ TOKEN : /* IDENTIFIERS */
 | <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
 | < MISC: "!"|"#"|"$"|"\""|"$"|"'"|"/"|":"|"&"|"="|"\u00ab"|"\u00bb"|"@"|"<"|">"|"~"|"\u00b4"|"`"|"\u00ba"|"\u00aa"|"_"|";" >
 | < ESCAPED: < SLASH >(< SLASH > | <CARET >|<DOLLAR >|<DOT >
-						|<OPEN_SQ_BRACKET >|<ALTERNATE >|<CLOSE_SQ_BRACKET >
-						|<OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
+						|<OPEN_SQ_BRACKET >|< CLOSE_SQ_BRACKET ><ALTERNATE >
+						| <OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
+						| < OPEN_BRACKET > | < CLOSE_BRACKET >
 						|<INTERROGATION >|<AST >|<PLUS >|< NULL >
 						|< DEC >|< TAB >|< NEWLINE >|< CARRIAGE_RETURN >) >
 }
@@ -129,9 +130,8 @@ void Expression() :
 {/*@bgen(jjtree) Expression */
         try {
 /*@egen*/
-	(t1 = <CARET > {jjtn000.jjtSetValue (t1.image);})?
-	(Element())*
-	(t2 = <DOLLAR > {jjtn000.jjtSetValue (t2.image);})?/*@bgen(jjtree)*/
+	//(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
+	(Element() (ORexp())* )*/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -152,6 +152,7 @@ void Expression() :
           }
         }
 /*@egen*/
+	//(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
 }
 void Element() :
 {/*@bgen(jjtree) Element */
@@ -162,7 +163,7 @@ void Element() :
 {/*@bgen(jjtree) Element */
   try {
 /*@egen*/
-  ( ORexp() | Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?/*@bgen(jjtree)*/
+  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -220,6 +221,7 @@ void ExpPRT()     :
 void ORexp()      :
 {}
 {
+  
  <ALTERNATE >/*@bgen(jjtree) OR */
                {
                  SimpleNode jjtn001 = new SimpleNode(JJTOR);
@@ -227,7 +229,7 @@ void ORexp()      :
                  jjtree.openNodeScope(jjtn001);
                }
                try {
-/*@egen*/  Expression()/*@bgen(jjtree)*/
+/*@egen*/  Element()/*@bgen(jjtree)*/
                } catch (Throwable jjte001) {
                  if (jjtc001) {
                    jjtree.clearNodeScope(jjtn001);
@@ -247,7 +249,7 @@ void ORexp()      :
                    jjtree.closeNodeScope(jjtn001, true);
                  }
                }
-/*@egen*/      
+/*@egen*/    
 }
 
 void Range()://SETVALUE NOT ENOUGH; 
@@ -381,7 +383,7 @@ void Quantifier():
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
                           }
-/*@egen*/ {state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image); }) 
+/*@egen*/ {state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image); }) 
   	) | (
 
 	  {state.type = QuantifierState.Type.EXACTLY_X;}
