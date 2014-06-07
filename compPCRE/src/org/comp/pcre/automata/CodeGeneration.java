@@ -16,6 +16,7 @@ import org.comp.pcre.automata.State.Connection;
 
 public class CodeGeneration {
 
+	/*
 	public static class InvalidStateException extends Exception
 	{
 		private static final long serialVersionUID = -3540825325077073436L;
@@ -50,13 +51,16 @@ public class CodeGeneration {
 	
 	public static boolean accept(String str, int pos, int total, long curState) throws InvalidStateException
 	{
-		if( pos == total ) return isFinal(curState);
+		boolean isFinalChar = (pos == total);
+		if(isFinalChar && isFinal(curState)) return true;
 		Transition[] _states = _stateMap.get(curState);
 		if(_states == null) throw new InvalidStateException("Invalid state transition");
-		for(Transition t: _states) {
-			if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {
-				System.out.println("Pos["+pos+"]"+t.state+"-"+t.character);
-				if( accept(str, pos + 1, total, t.state) ) return true;
+		if( !isFinalChar ) {
+			for(Transition t: _states) {
+				if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {
+					System.out.println("Pos["+pos+"]"+t.state+"-"+t.character);
+					if( accept(str, pos + 1, total, t.state) ) return true;
+				}
 			}
 		}
 		for(Transition t: _states) {
@@ -70,11 +74,18 @@ public class CodeGeneration {
 	}
 	
 	private static void _loadMaps() {
-		_stateMap.put(0L,new Transition[]{new Transition(1L,"a"),});
-		_stateMap.put(1L,new Transition[]{new Transition(2L,"a"),new Transition(2L,null),new Transition(3L,null),});
-		_stateMap.put(2L,new Transition[]{new Transition(1L,null),new Transition(3L,"b"),});
-		_stateMap.put(3L,new Transition[]{new Transition(1L,null),new Transition(4L,"c"),});
-		_finalMap.add(4L);
+		_stateMap.put(0L,new Transition[]{new Transition(1L,"a"),new Transition(11L,null),});
+		_stateMap.put(1L,new Transition[]{new Transition(2L,"b"),new Transition(4L,null),});
+		_stateMap.put(2L,new Transition[]{new Transition(3L,"c"),new Transition(3L,null),});
+		_stateMap.put(3L,new Transition[]{new Transition(2L,null),new Transition(4L,"d"),});
+		_stateMap.put(4L,new Transition[]{new Transition(1L,null),new Transition(5L,"e"),});
+		_stateMap.put(5L,new Transition[]{new Transition(6L,null),});
+		_stateMap.put(6L,new Transition[]{new Transition(7L,"a"),new Transition(11L,null),});
+		_stateMap.put(7L,new Transition[]{new Transition(8L,"b"),new Transition(10L,null),});
+		_stateMap.put(8L,new Transition[]{new Transition(9L,"c"),new Transition(9L,null),});
+		_stateMap.put(9L,new Transition[]{new Transition(8L,null),new Transition(10L,"d"),});
+		_stateMap.put(10L,new Transition[]{new Transition(7L,null),new Transition(11L,"e"),});
+		_finalMap.add(11L);
 	}
 	
 	
@@ -102,7 +113,7 @@ public class CodeGeneration {
 			System.out.println("-> Input could not be accepted");
 		}
 	}
-	
+	*/
 	
 	
 	
@@ -208,13 +219,16 @@ public class CodeGeneration {
 			apd(1, "}\n\n");
 			
 			apd(1, "public static boolean accept(String str, int pos, int total, long curState) throws InvalidStateException {\n");
-			apd(2, "if( pos == total ) return isFinal(curState);\n");
+			apd(2, "boolean isFinalChar = (pos == total);\n");
+			apd(2, "if(isFinalChar && isFinal(curState)) return true;\n");
 			apd(2, "Transition[] _states = _stateMap.get(curState);\n");
 			apd(2, "if(_states == null) throw new InvalidStateException(\"Invalid state transition\");\n");
-			apd(2, "for(Transition t: _states) {\n");
-			apd(3, "if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {\n");
-			apd(4, "//System.out.println(\"Pos[\"+pos+\"]\"+t.state+\"-\"+t.character);\n");
-			apd(4, "if( accept(str, pos + 1, total, t.state) ) return true;\n");
+			apd(2, "if( !isFinalChar ) {\n");
+			apd(3, "for(Transition t: _states) {\n");
+			apd(4, "if( t.character != null && str.charAt(pos) == t.character.charAt(0) ) {\n");
+			apd(5, "//System.out.println(\"Pos[\"+pos+\"]\"+t.state+\"-\"+t.character);\n");
+			apd(5, "if( accept(str, pos + 1, total, t.state) ) return true;\n");
+			apd(4, "}\n");
 			apd(3, "}\n");
 			apd(2, "}\n");
 			apd(2, "for(Transition t: _states) {\n");

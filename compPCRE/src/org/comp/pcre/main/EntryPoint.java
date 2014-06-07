@@ -20,7 +20,7 @@ public class EntryPoint {
 	public static void main( String[] args ) throws ParseException
 	{ 
 		InputStream is = null;
-		String expression = "http://(www)?(abc)?\\.com";
+		String expression = "(a(bc*d)*e){0,2}";
 		try {
 			is = new ByteArrayInputStream( expression.getBytes( "UTF-8" ) );
 		} catch (Exception e) {
