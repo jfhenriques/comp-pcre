@@ -163,7 +163,7 @@ void Element() :
 {/*@bgen(jjtree) Element */
   try {
 /*@egen*/
-  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?/*@bgen(jjtree)*/
+  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()|Range()*/)(Quantifier())?/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -252,15 +252,9 @@ void ORexp()      :
 /*@egen*/    
 }
 
-void Range()://SETVALUE NOT ENOUGH; 
-{/*@bgen(jjtree) Range */
- SimpleNode jjtn000 = new SimpleNode(JJTRANGE);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t1,t2,t3,t4,t5,t6;}
-{/*@bgen(jjtree) Range */
-        try {
-/*@egen*/
+/*void Range()://SETVALUE NOT ENOUGH; 
+{Token t1,t2,t3,t4,t5,t6;}
+{
 	<OPEN_SQ_BRACKET >
 	(t1 = < CARET >)*
 	(//LOOKAHEAD(2)
@@ -269,28 +263,8 @@ void Range()://SETVALUE NOT ENOUGH;
 		| Chars()
 		| CharTypes()
 	)+
-	<CLOSE_SQ_BRACKET >/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
+	<CLOSE_SQ_BRACKET >
+}*/
 
 
 void Chars():

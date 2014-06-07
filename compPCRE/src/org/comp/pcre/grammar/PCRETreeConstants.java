@@ -9,10 +9,9 @@ public interface PCRETreeConstants
   public int JJTPRT = 3;
   public int JJTVOID = 4;
   public int JJTOR = 5;
-  public int JJTRANGE = 6;
-  public int JJTCHARS = 7;
-  public int JJTCHARTYPES = 8;
-  public int JJTQUANTIFIER = 9;
+  public int JJTCHARS = 6;
+  public int JJTCHARTYPES = 7;
+  public int JJTQUANTIFIER = 8;
 
 
   public String[] jjtNodeName = {
@@ -22,10 +21,9 @@ public interface PCRETreeConstants
     "PRT",
     "void",
     "OR",
-    "Range",
     "Chars",
     "CharTypes",
     "Quantifier",
   };
 }
-/* JavaCC - OriginalChecksum=0a02803e1e482c90536bd7685157ddb1 (do not edit this line) */
+/* JavaCC - OriginalChecksum=e234f6c8a938967e572f5ccf7c40871d (do not edit this line) */

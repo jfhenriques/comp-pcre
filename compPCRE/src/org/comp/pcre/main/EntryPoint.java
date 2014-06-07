@@ -1,9 +1,11 @@
 package org.comp.pcre.main;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import org.comp.pcre.automata.CodeGeneration;
 import org.comp.pcre.automata.GraphHelper;
 import org.comp.pcre.automata.NFACreator;
 import org.comp.pcre.automata.State;
@@ -18,12 +20,13 @@ public class EntryPoint {
 	public static void main( String[] args ) throws ParseException
 	{ 
 		InputStream is = null;
+		String expression = "http://(www)?(abc)?\\.com";
 		try {
-			is = new ByteArrayInputStream( "a(b(c|d|e)f){1,3}g".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( expression.getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		  PCRE parser = new PCRE( is );//System.in ) ;
+		  PCRE parser = new PCRE( is );
 		  
 		  SimpleNode root = parser.Start() ;
 		  System.out.println("Val:"+root.toString());
@@ -39,6 +42,11 @@ public class EntryPoint {
 		  GraphHelper.dumpSingleArrayS(state.getHead(), allConns, allStates);
 		  GraphHelper.generateGraph(allConns, allStates, "out", "png", true);
 		
-		
+		try {
+			CodeGeneration.fromAutomata("Testing", expression, state.getHead(), allStates);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -96,7 +96,7 @@ void Expression() :
 void Element() :
 {}
 {
-  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?
+  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()|Range()*/)(Quantifier())?
 
 }
 void ExpPRT() #PRT:
@@ -112,7 +112,7 @@ void ORexp() #void:
  <ALTERNATE >  Element() #OR
 }
 
-void Range()://SETVALUE NOT ENOUGH; 
+/*void Range()://SETVALUE NOT ENOUGH; 
 {Token t1,t2,t3,t4,t5,t6;}
 {
 	<OPEN_SQ_BRACKET >
@@ -124,7 +124,7 @@ void Range()://SETVALUE NOT ENOUGH;
 		| CharTypes()
 	)+
 	<CLOSE_SQ_BRACKET >
-}
+}*/
 
 
 void Chars():
