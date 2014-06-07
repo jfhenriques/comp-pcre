@@ -6,7 +6,7 @@ public class QuantifierState {
 	public static enum Type {
 		ZERO_OR_ONE,
 		ZERO_OR_MORE,
-		AT_LEAST_ONE,
+		ONE_OR_MORE,
 		RANGED,
 		EXACTLY_X
 	}

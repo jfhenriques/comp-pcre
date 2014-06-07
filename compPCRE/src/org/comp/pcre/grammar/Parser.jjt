@@ -160,7 +160,7 @@ void Quantifier():
     (
       	  ( t1 = < AST > {state.type = QuantifierState.Type.ZERO_OR_MORE; state.setValue(t1.image); })
      	| ( t1 = < INTERROGATION > {state.type = QuantifierState.Type.ZERO_OR_ONE; state.setValue(t1.image); })
-     	| ( t1 = < PLUS > {state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image); }) 
+     	| ( t1 = < PLUS > {state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image); }) 
   	) | (
 
 	  {state.type = QuantifierState.Type.EXACTLY_X;}

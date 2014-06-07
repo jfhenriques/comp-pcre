@@ -28,5 +28,15 @@ public class State {
 	{
 		this.name = ++stateCounter;
 	}
+	
+	public Connection connect(State to, boolean cyclic)
+	{
+		Connection c = new Connection(this, to);
+		c.cyclic = cyclic;
+		
+		this.connections.add(c);
+		
+		return c;
+	}
 
 }

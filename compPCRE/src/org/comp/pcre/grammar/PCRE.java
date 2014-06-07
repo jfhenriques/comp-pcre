@@ -431,7 +431,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
           t1 = jj_consume_token(PLUS);
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
-                           state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image);
+                           state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image);
           break;
         default:
           jj_la1[11] = jj_gen;

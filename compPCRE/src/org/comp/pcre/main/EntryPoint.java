@@ -18,7 +18,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "a*(b*a){1,2}".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "a+".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -30,9 +30,11 @@ public class EntryPoint {
 		  
 		  
 		  NFACreator creator = new NFACreator();
+		  
 		  State nfaRoot = creator.fromSimpleNode(root);
 		  ArrayList<Connection> allConns = new ArrayList<Connection>();
 		  ArrayList<State> allStates = new ArrayList<State>();
+		  
 		  GraphHelper.dumpSingleArrayS(nfaRoot, allConns, allStates);
 		  GraphHelper.generateGraph(allConns, allStates, "out", "png", true);
 		

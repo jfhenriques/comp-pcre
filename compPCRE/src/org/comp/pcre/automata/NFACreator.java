@@ -1,5 +1,7 @@
 package org.comp.pcre.automata;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.comp.pcre.automata.State.Connection;
@@ -55,25 +57,78 @@ public class NFACreator {
 	}
 	
 	
+	private static State createOrGetStateFromMap(HashMap<Long, State> stateMap, State ref)
+	{
+		State find = stateMap.get(ref.name);
+		
+		if( find == null )
+		{
+			find = new State();
+			stateMap.put(ref.name, find);
+		}
+		
+		return find;
+	}
+	private static State replicateStateSequenceBranch(HashMap<Long, State> stateMap, State curRef, State startRef, State endRef)
+	{
+		if( stateMap == null || curRef == null )
+			return null;
+		
+		State addTo = createOrGetStateFromMap(stateMap, curRef);
+		
+		for(Connection c : curRef.connections)
+		{
+			State newS = null;
+			
+			if( c.cyclic )
+			{
+				if( curRef.name == startRef.name )
+					continue;			
+				
+				newS = createOrGetStateFromMap(stateMap, c.to);
+			}
+			else
+			{
+				if( endRef != null && curRef.name == endRef.name)
+					continue;
+				
+				newS = replicateStateSequenceBranch(stateMap, c.to, startRef, endRef);
+			}
+			
+			if( newS == null )
+				continue;
+			
+			Connection nC = addTo.connect(newS, c.cyclic);
+			nC.character = c.character;
+		}
+	
+		return addTo;
+	}
+	
+	
 	private StateQueue replicateStateSequence(StateQueue state)
 	{
-		State head = new State();
-		StateQueue newStateQueue = new StateQueue(head);
+
+		HashMap<Long, State> stateMap = new HashMap<Long, State>();
 		
 		
+		replicateStateSequenceBranch(stateMap, state.head, state.head, state.last);
 		
+		State head = stateMap.get(state.head.name);
+		StateQueue newQueue = new StateQueue(head);
 		
+		newQueue.last = stateMap.get(state.last.name); 
 		
-		return newStateQueue;
+		return newQueue;
 	}
 
 	
 	
 	
-	private Connection analysis(SimpleNode node)
+	private void analysis(SimpleNode node)
 	{
 		if( node == null || node.jjtGetValue() == null)
-			return null;
+			return;
 			
 		String name = node.toString();
 		StateQueue queue = stateQueue.element();
@@ -83,43 +138,77 @@ public class NFACreator {
 			System.out.println(level + " Chars");
 			
 			State s = new State();
-			Connection c = new Connection(queue.last, s);
+			Connection c = queue.last.connect(s, false);
+			queue.last = s;
 			
 			c.character =  node.jjtGetValue().toString();
-			c.to = s;
-			
-			return c;
 		}
 		else
 		if( name.equals("Quantifier") )
 		{
 			System.out.println(level + " Quantifier");
 			QuantifierState quantifier = (QuantifierState) node.jjtGetValue();
+
 			
-			switch(quantifier.type)
+			if( quantifier.type == QuantifierState.Type.ZERO_OR_MORE )
+				queue.last.connect(queue.head, true);
+
+			else
 			{
-				case ZERO_OR_MORE:
+				long start = -1;
+				long end = -1;
+				
+				switch(quantifier.type)
+				{
+					case ONE_OR_MORE:
+						start = 1;
+						end = 2;
+						
+						break;
+					case EXACTLY_X:
+						start = quantifier.value;
+						end = quantifier.value;
+						
+						break;
+					case ZERO_OR_ONE:
+						start = 0;
+						end = 1;
+						
+						break;
+					case RANGED:
+						start = quantifier.value;
+						end = quantifier.max;
+						
+						break;
+				}
+				
+				State newQueueLast = queue.last;
+				
+				ArrayList<State> toConnect = new ArrayList<State>();
+				
+				if( start == 0 )
+					toConnect.add(queue.head);
+				
+				for(long i = 1; i < end; i++)
+				{
+					StateQueue newQueue = replicateStateSequence(queue);
 					
-					Connection c = new Connection(queue.last, queue.head);
-					c.cyclic = true;
+					if( i >= start && i < end )
+						toConnect.add(newQueue.head);
 					
-					queue.last.connections.add(c);
+					newQueueLast.connect(newQueue.head, false);
 					
-					break;
-					
-				case AT_LEAST_ONE:
-				case EXACTLY_X:
-				case ZERO_OR_ONE:
-				case RANGED:
-					
-					
-					
-					break;
-			}	
+					newQueueLast = newQueue.last;
+				}
+				queue.last = newQueueLast;
+				
+				for(State s : toConnect)
+				{
+					s.connect(queue.last, true);
+				}
+			}
 			
 		}
-		
-		return null;
 	}
 	
 
@@ -141,12 +230,7 @@ public class NFACreator {
 			if( nodeChild == null )
 				continue;
 			
-			Connection s = analysis(nodeChild);
-			if( s != null )
-			{	
-				cur.last.connections.add(s);
-				cur.last = s.to;
-			}
+			analysis(nodeChild);
 			
 			
 			if( nodeChild.jjtGetNumChildren() > 0 )

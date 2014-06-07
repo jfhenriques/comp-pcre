@@ -381,7 +381,7 @@ void Quantifier():
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
                           }
-/*@egen*/ {state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image); }) 
+/*@egen*/ {state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image); }) 
   	) | (
 
 	  {state.type = QuantifierState.Type.EXACTLY_X;}
