@@ -159,7 +159,10 @@ public class NFACreator {
 
 			
 			if( quantifier.type == QuantifierState.Type.ZERO_OR_MORE )
+			{
+				queue.head.connect(queue.last, true);
 				queue.last.connect(queue.head, true);
+			}
 
 			else
 			{
@@ -213,6 +216,11 @@ public class NFACreator {
 				for(State s : toConnect)
 				{
 					s.connect(queue.last, true);
+				}
+				
+				if( quantifier.type == QuantifierState.Type.ONE_OR_MORE )
+				{
+					queue.last.connect(queue.head, true);
 				}
 			}
 			
