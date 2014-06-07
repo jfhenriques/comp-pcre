@@ -16,11 +16,12 @@ public class GraphHelper {
 	
 	private static void dumpConnectionsToSingleArray(State root, ArrayList<Connection> array)
 	{
+		root.visited = true;
 		for(Connection c: root.connections)
 		{
 			array.add(c);
 			
-			if( c.to != null && !c.cyclic )
+			if( c.to != null && !c.to.visited )
 				dumpConnectionsToSingleArray(c.to, array);
 		}
 	}
@@ -33,14 +34,9 @@ public class GraphHelper {
 		connections.clear();
 		states.clear();
 		
-		for(Connection c: root.connections)
-		{
-			connections.add(c);
-			
-			if( c.to != null && !c.cyclic )
-				dumpConnectionsToSingleArray(c.to, connections);
-		}
+		dumpConnectionsToSingleArray(root, connections);
 		
+
 		ArrayList<Long> map = new ArrayList<Long>();
 		
 		for( Connection c : connections)
@@ -56,10 +52,9 @@ public class GraphHelper {
 	
 	public static void generateGraph(ArrayList<Connection> connections,
 										ArrayList<State> states,
-										State endState,
 										String filename, String type, Boolean printConsole) 
     {
-       // String finalStates = "";
+        String finalStates = "";
 
         // Define GraphViz
         GraphViz gv = new GraphViz();
@@ -68,17 +63,17 @@ public class GraphHelper {
 
 
         // Add final states to declaration
-//        for ( Connection c : root.connections )
-//        {
-//            if ( c.isFinal() ) 
-//            {
-//                finalStates += c.getName() + " ";
-//            }
-//        }
-//
-//        if ( !finalStates.equals("") )
-//        	gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + finalStates + ";");
-        gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + endState.name);
+        for ( State s : states )
+        {
+            if ( s.isFinal ) 
+            {
+                finalStates += s.name + " ";
+            }
+        }
+
+        if ( !finalStates.equals("") )
+        	gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + finalStates + ";");
+        //gv.addln("node [shape = doublecircle, color=black, fontcolor=black]; " + endState.name);
 
         gv.addln("node [shape = circle];");
         gv.addln("start -> 0;");

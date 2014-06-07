@@ -19,7 +19,7 @@ public class EntryPoint {
 	{ 
 		InputStream is = null;
 		try {
-			is = new ByteArrayInputStream( "a?".getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( "aa(b|c|d)e".getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,7 +37,7 @@ public class EntryPoint {
 		  ArrayList<State> allStates = new ArrayList<State>();
 		  
 		  GraphHelper.dumpSingleArrayS(state.getHead(), allConns, allStates);
-		  GraphHelper.generateGraph(allConns, allStates, state.getTail(), "out", "png", true);
+		  GraphHelper.generateGraph(allConns, allStates, "out", "png", true);
 		
 		
 	}

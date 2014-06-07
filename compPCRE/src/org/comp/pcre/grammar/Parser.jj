@@ -129,8 +129,9 @@ void Expression() :
 {/*@bgen(jjtree) Expression */
         try {
 /*@egen*/
-	//(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
-	(Element())*/*@bgen(jjtree)*/
+	(t1 = <CARET > {jjtn000.jjtSetValue (t1.image);})?
+	(Element())*
+	(t2 = <DOLLAR > {jjtn000.jjtSetValue (t2.image);})?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -151,7 +152,6 @@ void Expression() :
           }
         }
 /*@egen*/
-	//(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
 }
 void Element() :
 {/*@bgen(jjtree) Element */
@@ -381,7 +381,7 @@ void Quantifier():
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
                           }
-/*@egen*/ {state.type = QuantifierState.Type.ONE_OR_MORE; state.setValue(t1.image); }) 
+/*@egen*/ {state.type = QuantifierState.Type.AT_LEAST_ONE; state.setValue(t1.image); }) 
   	) | (
 
 	  {state.type = QuantifierState.Type.EXACTLY_X;}

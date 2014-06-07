@@ -73,8 +73,9 @@ TOKEN : /* IDENTIFIERS */
 | <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
 | < MISC: "!"|"#"|"$"|"\""|"$"|"'"|"/"|":"|"&"|"="|"«"|"»"|"@"|"<"|">"|"~"|"´"|"`"|"º"|"ª"|"_"|";" >
 | < ESCAPED: < SLASH >(< SLASH > | <CARET >|<DOLLAR >|<DOT >
-						|<OPEN_SQ_BRACKET >|<ALTERNATE >|<CLOSE_SQ_BRACKET >
-						|<OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
+						|<OPEN_SQ_BRACKET >|< CLOSE_SQ_BRACKET ><ALTERNATE >
+						| <OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >
+						| < OPEN_BRACKET > | < CLOSE_BRACKET >
 						|<INTERROGATION >|<AST >|<PLUS >|< NULL >
 						|< DEC >|< TAB >|< NEWLINE >|< CARRIAGE_RETURN >) >
 }
@@ -89,13 +90,13 @@ void Expression() :
 {Token t1, t2;}
 {
 	//(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
-	(Element())*
+	(Element() (ORexp())* )*
 	//(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
 }
 void Element() :
 {}
 {
-  ( ORexp() | Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?
+  ( Chars() | ExpPRT() |CharTypes()/*|AnchorAndSimpleAssertions()*/|Range())(Quantifier())?
 
 }
 void ExpPRT() #PRT:
@@ -107,7 +108,8 @@ void ExpPRT() #PRT:
 void ORexp() #void:
 {}
 {
- <ALTERNATE >  Expression()  #OR 
+  
+ <ALTERNATE >  Element() #OR
 }
 
 void Range()://SETVALUE NOT ENOUGH; 

@@ -21,6 +21,8 @@ public class State {
 	private static long stateCounter = -1;
 
 	public final long name;
+	public boolean isFinal = false;
+	public boolean visited = false;
 	public ArrayList<Connection> connections = new ArrayList<Connection>();
 	
 	public State()

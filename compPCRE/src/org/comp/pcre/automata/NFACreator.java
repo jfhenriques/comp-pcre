@@ -16,6 +16,8 @@ public class NFACreator {
 	{
 		protected final State head;
 		protected State last = null;
+		protected ArrayList<State> orQueue = new ArrayList<State>(0);
+		protected ArrayList<State> toConnect = new ArrayList<State>(0);
 		
 		public StateQueue(State head)
 		{
@@ -60,6 +62,8 @@ public class NFACreator {
 		stateQueue.addFirst(new StateQueue(new State()));
 		
 		iterate(root);
+		
+		stateQueue.element().last.isFinal = true;
 		
 		return stateQueue.element();
 	}
@@ -145,9 +149,28 @@ public class NFACreator {
 			//System.out.println(level + " Chars");
 			
 			State s = new State();
+			
+			if( queue.toConnect.size() > 0 )
+			{
+				for(State st: queue.toConnect)
+				{
+					st.isFinal = false;
+					st.connect(s, node.jjtGetValue().toString(), false);
+				}
+				
+				queue.toConnect.clear();
+			}
+			
 			queue.last.connect(s, node.jjtGetValue().toString(), false);
 			queue.last = s;
 		}
+//		else
+//		if( name.equals("PRT") )
+//		{
+//			State s = new State();
+//			queue.last.connect(s, "aa", false);
+//			queue.last = s;
+//		}
 		else
 		if( name.equals("Quantifier") )
 		{
@@ -174,68 +197,45 @@ public class NFACreator {
 					queue.head.connect(queue.last, null, true);
 					
 					return;
+
 					
-					
-//				case ONE_OR_MORE:
-//					start = 1;
-//					end = 1;
-//					
-//					break;
 				case EXACTLY_X:
 					start = quantifier.value;
 					end = quantifier.value;
 					
 					break;
-//				case ZERO_OR_ONE:
-//					start = 0;
-//					end = 1;
-//					
-//					break;
+
 				case RANGED:
 					start = quantifier.value;
 					end = quantifier.max;
 					
 					break;
 			}
-			
-//			switch( quantifier.type )
-//			{
-//				case EXACTLY_X:
-//				case ZERO_OR_ONE:
-//				case RANGED:
 
-				State newQueueLast = queue.last;
+			State newQueueLast = queue.last;
+			
+			ArrayList<State> toConnect = new ArrayList<State>();
+			
+			if( start == 0 )
+				toConnect.add(queue.head);
+			
+			for(long i = 1; i < end; i++)
+			{
+				StateQueue newQueue = replicateStateSequence(queue);
 				
-				ArrayList<State> toConnect = new ArrayList<State>();
+				if( i >= start && i < end )
+					toConnect.add(newQueue.head);
 				
-				if( start == 0 )
-					toConnect.add(queue.head);
+				newQueueLast.connect(newQueue.head, null, false);
 				
-				for(long i = 1; i < end; i++)
-				{
-					StateQueue newQueue = replicateStateSequence(queue);
-					
-					if( i >= start && i < end )
-						toConnect.add(newQueue.head);
-					
-					newQueueLast.connect(newQueue.head, null, false);
-					
-					newQueueLast = newQueue.last;
-				}
-				queue.last = newQueueLast;
-				
-				for(State s : toConnect)
-				{
-					s.connect(queue.last, null, true);
-				}
-					
-	//				if( quantifier.type == QuantifierState.Type.ONE_OR_MORE )
-	//				{
-	//					queue.last.connect(queue.head, null, true);
-	//				}
-//					
-//					break;
-//			}
+				newQueueLast = newQueue.last;
+			}
+			queue.last = newQueueLast;
+			
+			for(State s : toConnect)
+			{
+				s.connect(queue.last, null, true);
+			}
 			
 		}
 	}
@@ -252,6 +252,7 @@ public class NFACreator {
 		if( cur == null )
 			return null;
 		
+		
 		for(int i=0;i<root.jjtGetNumChildren();i++)
 		{
 			nodeChild = (SimpleNode) root.jjtGetChild(i);
@@ -264,13 +265,56 @@ public class NFACreator {
 			
 			if( nodeChild.jjtGetNumChildren() > 0 )
 			{
-				//level++;
-				stateQueue.addFirst(new StateQueue(cur.last));
+				boolean isOR = nodeChild.toString().equals("OR");
+				
+				if( isOR )
+				{
+					cur.orQueue.add(cur.last);
+					cur.last.isFinal = true;
+//					State newS = new State();
+//					cur.head.connect(newS, null, false);
+//					stateQueue.addFirst(new StateQueue(newS));
+					
+					stateQueue.addFirst(new StateQueue(cur.head));
+				}
+				else
+				{
+					StateQueue sq = new StateQueue(cur.last);
+					if( cur.toConnect.size() > 0)
+					{
+						sq.toConnect.addAll(cur.toConnect);
+						cur.toConnect.clear();
+					}
+					stateQueue.addFirst(sq);
+				}
+				
 				
 				cur.last = iterate(nodeChild);
 				
-				stateQueue.remove();
-				//level--;
+				
+//				if( cur.toConnect.size() > 0 )
+//				{
+//					for(State s: cur.toConnect)
+//						s.connect(cur.last, null, false);
+//					
+//					cur.toConnect.clear();
+//				}
+				
+				if( isOR )
+				{
+					cur.last.isFinal = true;
+					cur.orQueue.add(cur.last);
+				}
+				
+				StateQueue last = stateQueue.remove();
+				if( last != null )
+				{
+					if( last.orQueue.size() > 0 )
+						cur.toConnect.addAll(last.orQueue);
+					
+					if( last.toConnect.size() > 0 )
+						cur.toConnect.addAll(last.toConnect);
+				}
 			}
 		}
 		
