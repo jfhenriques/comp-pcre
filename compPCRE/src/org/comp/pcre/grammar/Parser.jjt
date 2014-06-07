@@ -88,9 +88,9 @@ SimpleNode Start(): {}
 void Expression() :
 {Token t1, t2;}
 {
-	(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
+	//(t1 = <CARET > {jjtThis.jjtSetValue (t1.image);})?
 	(Element())*
-	(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
+	//(t2 = <DOLLAR > {jjtThis.jjtSetValue (t2.image);})?
 }
 void Element() :
 {}

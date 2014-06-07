@@ -37,7 +37,7 @@ public class GraphHelper {
 		{
 			connections.add(c);
 			
-			if( c.to != null  )
+			if( c.to != null && !c.cyclic )
 				dumpConnectionsToSingleArray(c.to, connections);
 		}
 		

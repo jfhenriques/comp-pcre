@@ -36,7 +36,7 @@ public class NFACreator {
 	
 	
 	private LinkedList<StateQueue> stateQueue = new LinkedList<StateQueue>();
-	private int level = 0;
+	//private int level = 0;
 	
 	
 	public NFACreator()
@@ -106,8 +106,7 @@ public class NFACreator {
 			if( newS == null )
 				continue;
 			
-			Connection nC = addTo.connect(newS, c.cyclic);
-			nC.character = c.character;
+			addTo.connect(newS, c.character, c.cyclic);
 		}
 	
 		return addTo;
@@ -143,56 +142,68 @@ public class NFACreator {
 		
 		if( name.equals("Chars") )
 		{
-			System.out.println(level + " Chars");
+			//System.out.println(level + " Chars");
 			
 			State s = new State();
-			Connection c = queue.last.connect(s, false);
+			queue.last.connect(s, node.jjtGetValue().toString(), false);
 			queue.last = s;
-			
-			c.character =  node.jjtGetValue().toString();
 		}
 		else
 		if( name.equals("Quantifier") )
 		{
-			System.out.println(level + " Quantifier");
+			//System.out.println(level + " Quantifier");
 			QuantifierState quantifier = (QuantifierState) node.jjtGetValue();
 
+			long start = -1;
+			long end = -1;
 			
-			if( quantifier.type == QuantifierState.Type.ZERO_OR_MORE )
+			switch( quantifier.type )
 			{
-				queue.head.connect(queue.last, true);
-				queue.last.connect(queue.head, true);
+				case ZERO_OR_MORE:
+					queue.head.connect(queue.last, null, true);
+					queue.last.connect(queue.head, null, true);
+					
+					return;
+					
+				case ONE_OR_MORE:
+					queue.last.connect(queue.head, null, true);
+					
+					return;
+					
+				case ZERO_OR_ONE:
+					queue.head.connect(queue.last, null, true);
+					
+					return;
+					
+					
+//				case ONE_OR_MORE:
+//					start = 1;
+//					end = 1;
+//					
+//					break;
+				case EXACTLY_X:
+					start = quantifier.value;
+					end = quantifier.value;
+					
+					break;
+//				case ZERO_OR_ONE:
+//					start = 0;
+//					end = 1;
+//					
+//					break;
+				case RANGED:
+					start = quantifier.value;
+					end = quantifier.max;
+					
+					break;
 			}
+			
+//			switch( quantifier.type )
+//			{
+//				case EXACTLY_X:
+//				case ZERO_OR_ONE:
+//				case RANGED:
 
-			else
-			{
-				long start = -1;
-				long end = -1;
-				
-				switch(quantifier.type)
-				{
-					case ONE_OR_MORE:
-						start = 1;
-						end = 2;
-						
-						break;
-					case EXACTLY_X:
-						start = quantifier.value;
-						end = quantifier.value;
-						
-						break;
-					case ZERO_OR_ONE:
-						start = 0;
-						end = 1;
-						
-						break;
-					case RANGED:
-						start = quantifier.value;
-						end = quantifier.max;
-						
-						break;
-				}
-				
 				State newQueueLast = queue.last;
 				
 				ArrayList<State> toConnect = new ArrayList<State>();
@@ -207,7 +218,7 @@ public class NFACreator {
 					if( i >= start && i < end )
 						toConnect.add(newQueue.head);
 					
-					newQueueLast.connect(newQueue.head, false);
+					newQueueLast.connect(newQueue.head, null, false);
 					
 					newQueueLast = newQueue.last;
 				}
@@ -215,14 +226,16 @@ public class NFACreator {
 				
 				for(State s : toConnect)
 				{
-					s.connect(queue.last, true);
+					s.connect(queue.last, null, true);
 				}
-				
-				if( quantifier.type == QuantifierState.Type.ONE_OR_MORE )
-				{
-					queue.last.connect(queue.head, true);
-				}
-			}
+					
+	//				if( quantifier.type == QuantifierState.Type.ONE_OR_MORE )
+	//				{
+	//					queue.last.connect(queue.head, null, true);
+	//				}
+//					
+//					break;
+//			}
 			
 		}
 	}
@@ -251,13 +264,13 @@ public class NFACreator {
 			
 			if( nodeChild.jjtGetNumChildren() > 0 )
 			{
-				level++;
+				//level++;
 				stateQueue.addFirst(new StateQueue(cur.last));
 				
 				cur.last = iterate(nodeChild);
 				
 				stateQueue.remove();
-				level--;
+				//level--;
 			}
 		}
 		

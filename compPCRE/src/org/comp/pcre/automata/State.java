@@ -13,7 +13,6 @@ public class State {
 		
 		public Connection(State from, State to)
 		{
-			
 			this.from = from;
 			this.to = to;
 		}
@@ -29,11 +28,25 @@ public class State {
 		this.name = ++stateCounter;
 	}
 	
-	public Connection connect(State to, boolean cyclic)
+	
+	public Connection connect(State to, String character, boolean cyclic)
 	{
+		for(Connection cc: connections)
+		{
+			if(    to.name == cc.to.name 
+				&& (     ( character == null && cc.character == null )
+				      || ( character != null && character.equals(cc.character) ) ) )
+			{
+				cc.cyclic = cyclic;
+				return cc;
+			}
+		}
+
 		Connection c = new Connection(this, to);
-		c.cyclic = cyclic;
 		
+		c.cyclic = cyclic;
+		c.character = character;
+
 		this.connections.add(c);
 		
 		return c;
