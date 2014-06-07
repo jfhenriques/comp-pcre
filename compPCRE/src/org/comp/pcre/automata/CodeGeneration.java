@@ -262,11 +262,11 @@ public class CodeGeneration {
 			apd(3, "String toAccept = br.readLine();\n");
 			apd(3, "try {\n");
 			apd(4, "if( accept(toAccept, 0, toAccept.length(), 0) ) {\n");
-			apd(5, "System.out.println(\"** Input accepted **\");\n");
+			apd(5, "System.out.println(\"** Input accepted **\\n\");\n");
 			apd(5, "continue;\n");
 			apd(4, "}\n");
 			apd(3, "} catch(InvalidStateException ise) { }\n");
-			apd(3, "System.out.println(\"-> Input could not be accepted <-\");\n");
+			apd(3, "System.out.println(\"## Input could not be accepted ##\\n\");\n");
 			apd(2, "}\n");
 			apd(1, "}\n\n");
 			
