@@ -13,23 +13,23 @@ public class QuantifierState {
 	
 	public Type type = null;
 	
-	public long max = -1;
-	public long value = -1;
+	public Long max = null;
+	public Long value = null;
 	
 	public void setValue(String value)
 	{
 		try {
-			this.value = Integer.valueOf(value);
+			this.value = Long.valueOf(value);
 		} catch(Exception e) {
-			this.value = -1;
+			this.value = null;
 		}
 	}
 	public void setMax(String value)
 	{
 		try {
-			this.max = Integer.valueOf(value);
+			this.max = Long.valueOf(value);
 		} catch(Exception e) {
-			this.max = -1;
+			this.max = null;
 		}
 	}
 }

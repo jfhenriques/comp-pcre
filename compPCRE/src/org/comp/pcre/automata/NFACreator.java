@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.comp.pcre.automata.State.Connection;
+import org.comp.pcre.grammar.ParseException;
 import org.comp.pcre.grammar.SimpleNode;
 
 
@@ -55,7 +56,7 @@ public class NFACreator {
 	}
 
 	
-	public StateQueue fromSimpleNode(SimpleNode root)
+	public StateQueue fromSimpleNode(SimpleNode root) throws ParseException
 	{
 		this.reset();
 		
@@ -136,7 +137,7 @@ public class NFACreator {
 	
 	
 	
-	private void analysis(SimpleNode node)
+	private void analysis(SimpleNode node) throws ParseException
 	{
 		if( node == null || node.jjtGetValue() == null)
 			return;
@@ -200,17 +201,29 @@ public class NFACreator {
 
 					
 				case EXACTLY_X:
+					
+					if( quantifier.value != null && quantifier.value < 1L )
+						throw new ParseException("Quantifier repetition cannot be zero");
+					
 					start = quantifier.value;
 					end = quantifier.value;
 					
 					break;
 
 				case RANGED:
+					
+					if( quantifier.max != null && quantifier.max < 1L )
+						throw new ParseException("Quantifier repetition cannot be zero");
+					
+					if( quantifier.value > quantifier.max )
+						throw new ParseException("Quantifier minimum repetitions cannot be greater than max repetition");
+					
 					start = quantifier.value;
 					end = quantifier.max;
 					
 					break;
 			}
+			
 
 			State newQueueLast = queue.last;
 			
@@ -243,7 +256,7 @@ public class NFACreator {
 
 	
 	
-	public State iterate(SimpleNode root)
+	public State iterate(SimpleNode root) throws ParseException
 	{
 		SimpleNode nodeChild = null;
 		
