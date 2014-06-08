@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.comp.pcre.automata.CodeGeneration;
 import org.comp.pcre.automata.GraphHelper;
+import org.comp.pcre.automata.GraphViz;
 import org.comp.pcre.automata.NFACreator;
 import org.comp.pcre.automata.State;
 import org.comp.pcre.automata.NFACreator.StateQueue;
@@ -19,11 +20,24 @@ public class EntryPoint {
 
 	public static void main( String[] args ) throws ParseException
 	{ 
+		String outputName = "Automata";
+		
+		if( args.length == 0 )
+		{
+			System.err.println("Tem de especificar a expressão regular como primeiro argumento");
+			System.exit(1);
+		}
+		if( args.length > 1 )
+			outputName = args[1];
+		
+		if( args.length > 2)
+			GraphViz.DOT = args[2];
+		
 		InputStream is = null;
-		String expression = "a.*c";
+		//String expression = "a.*c";
 		//String expression = "http://(www|blog)\\.algumavez\\.com";
 		try {
-			is = new ByteArrayInputStream( expression.getBytes( "UTF-8" ) );
+			is = new ByteArrayInputStream( args[0].getBytes( "UTF-8" ) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,10 +55,10 @@ public class EntryPoint {
 		  ArrayList<State> allStates = new ArrayList<State>();
 		  
 		  GraphHelper.dumpSingleArrayS(state.getHead(), allConns, allStates);
-		  GraphHelper.generateGraph(allConns, allStates, "out", "png", true);
+		  GraphHelper.generateGraph(allConns, allStates, outputName, "png", true);
 		
 		try {
-			CodeGeneration.fromAutomata("Testing", expression, state.getHead(), allStates);
+			CodeGeneration.fromAutomata(outputName, args[0], state.getHead(), allStates);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

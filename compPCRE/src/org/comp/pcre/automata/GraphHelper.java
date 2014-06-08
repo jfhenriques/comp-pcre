@@ -81,7 +81,7 @@ public class GraphHelper {
         // Connections
         for(Connection c : connections)
         {
-        	gv.addln( c.from.name + " -> " + c.to.name + " [ label = \"" + c.character + "\" ];" );
+        	gv.addln( c.from.name + " -> " + c.to.name + " [ label = \"" + ( c.character == null ? "< E >" : c.character ) + "\" ];" );
         }
 
 	    gv.addln(gv.end_graph());

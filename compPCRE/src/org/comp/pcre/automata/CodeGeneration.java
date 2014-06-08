@@ -274,7 +274,7 @@ public class CodeGeneration {
 			apd(5, "continue;\n");
 			apd(4, "}\n");
 			apd(3, "} catch(InvalidStateException ise) { }\n");
-			apd(3, "System.out.println(\"## Input could not be accepted ##\\n\");\n");
+			apd(3, "System.err.println(\"## ERROR: Input not accepted ##\\n\");\n");
 			apd(2, "}\n");
 			apd(1, "}\n\n");
 			
