@@ -376,7 +376,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x21,0x7001010,0x80000,0x7001010,0x4c40,0x7000000,0xc40,0x8000,0x4c40,};
+      jj_la1_0 = new int[] {0x11,0x3800808,0x40000,0x3800808,0x2620,0x3800000,0x620,0x4000,0x2620,};
    }
 
   /** Constructor with InputStream. */
@@ -496,7 +496,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[27];
+    boolean[] la1tokens = new boolean[26];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -510,7 +510,7 @@ public class PCRE/*@bgen(jjtree)*/implements PCRETreeConstants, PCREConstants {/
         }
       }
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 26; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

@@ -15,7 +15,7 @@ private final int jjStopStringLiteralDfa_0(int pos, long active0)
    switch (pos)
    {
       case 0:
-         if ((active0 & 0x380L) != 0L)
+         if ((active0 & 0x1c0L) != 0L)
             return 4;
          return -1;
       default :
@@ -37,40 +37,40 @@ private int jjMoveStringLiteralDfa0_0()
    switch(curChar)
    {
       case 10:
-         return jjStopAtPos(0, 5);
-      case 36:
-         return jjStopAtPos(0, 21);
-      case 40:
-         return jjStopAtPos(0, 12);
-      case 41:
-         return jjStopAtPos(0, 13);
-      case 42:
-         return jjStopAtPos(0, 6);
-      case 43:
-         return jjStopAtPos(0, 10);
-      case 44:
-         return jjStopAtPos(0, 15);
-      case 45:
-         return jjStopAtPos(0, 22);
-      case 46:
          return jjStopAtPos(0, 4);
-      case 63:
-         return jjStopAtPos(0, 11);
-      case 91:
-         return jjStopAtPos(0, 17);
-      case 92:
-         jjmatchedKind = 7;
-         return jjMoveStringLiteralDfa1_0(0x300L);
-      case 93:
-         return jjStopAtPos(0, 18);
-      case 94:
+      case 36:
          return jjStopAtPos(0, 20);
-      case 123:
+      case 40:
+         return jjStopAtPos(0, 11);
+      case 41:
+         return jjStopAtPos(0, 12);
+      case 42:
+         return jjStopAtPos(0, 5);
+      case 43:
+         return jjStopAtPos(0, 9);
+      case 44:
          return jjStopAtPos(0, 14);
-      case 124:
-         return jjStopAtPos(0, 19);
-      case 125:
+      case 45:
+         return jjStopAtPos(0, 21);
+      case 46:
+         return jjStopAtPos(0, 3);
+      case 63:
+         return jjStopAtPos(0, 10);
+      case 91:
          return jjStopAtPos(0, 16);
+      case 92:
+         jjmatchedKind = 6;
+         return jjMoveStringLiteralDfa1_0(0x180L);
+      case 93:
+         return jjStopAtPos(0, 17);
+      case 94:
+         return jjStopAtPos(0, 19);
+      case 123:
+         return jjStopAtPos(0, 13);
+      case 124:
+         return jjStopAtPos(0, 18);
+      case 125:
+         return jjStopAtPos(0, 15);
       default :
          return jjMoveNfa_0(1, 0);
    }
@@ -85,12 +85,12 @@ private int jjMoveStringLiteralDfa1_0(long active0)
    switch(curChar)
    {
       case 110:
-         if ((active0 & 0x100L) != 0L)
-            return jjStopAtPos(1, 8);
+         if ((active0 & 0x80L) != 0L)
+            return jjStopAtPos(1, 7);
          break;
       case 114:
-         if ((active0 & 0x200L) != 0L)
-            return jjStopAtPos(1, 9);
+         if ((active0 & 0x100L) != 0L)
+            return jjStopAtPos(1, 8);
          break;
       default :
          break;
@@ -119,31 +119,31 @@ private int jjMoveNfa_0(int startState, int curPos)
             switch(jjstateSet[--i])
             {
                case 1:
-                  if ((0x7c0080de00000000L & l) != 0L)
+                  if ((0x7c0080df00000000L & l) != 0L)
                   {
-                     if (kind > 25)
-                        kind = 25;
+                     if (kind > 24)
+                        kind = 24;
                   }
                   else if ((0x3ff000000000000L & l) != 0L)
                   {
-                     if (kind > 23)
-                        kind = 23;
+                     if (kind > 22)
+                        kind = 22;
                      jjCheckNAdd(0);
                   }
                   break;
                case 4:
-                  if ((0x80004f1000000000L & l) != 0L && kind > 26)
-                     kind = 26;
+                  if ((0x80004f1000000000L & l) != 0L && kind > 25)
+                     kind = 25;
                   break;
                case 0:
                   if ((0x3ff000000000000L & l) == 0L)
                      break;
-                  kind = 23;
+                  kind = 22;
                   jjCheckNAdd(0);
                   break;
                case 2:
-                  if ((0x7c0080de00000000L & l) != 0L && kind > 25)
-                     kind = 25;
+                  if ((0x7c0080df00000000L & l) != 0L && kind > 24)
+                     kind = 24;
                   break;
                default : break;
             }
@@ -159,13 +159,13 @@ private int jjMoveNfa_0(int startState, int curPos)
                case 1:
                   if ((0x7fffffe07fffffeL & l) != 0L)
                   {
-                     if (kind > 24)
-                        kind = 24;
+                     if (kind > 23)
+                        kind = 23;
                   }
                   else if ((0x4000000180000001L & l) != 0L)
                   {
-                     if (kind > 25)
-                        kind = 25;
+                     if (kind > 24)
+                        kind = 24;
                   }
                   else if (curChar == 92)
                      jjAddStates(0, 1);
@@ -173,15 +173,15 @@ private int jjMoveNfa_0(int startState, int curPos)
                case 4:
                   if ((0x2800000058000000L & l) != 0L)
                   {
-                     if (kind > 26)
-                        kind = 26;
+                     if (kind > 25)
+                        kind = 25;
                   }
                   else if (curChar == 93)
                      jjstateSet[jjnewStateCnt++] = 6;
                   break;
                case 2:
                   if ((0x4000000180000001L & l) != 0L)
-                     kind = 25;
+                     kind = 24;
                   break;
                case 3:
                   if (curChar == 92)
@@ -193,7 +193,7 @@ private int jjMoveNfa_0(int startState, int curPos)
                   break;
                case 6:
                   if (curChar == 124)
-                     kind = 26;
+                     kind = 25;
                   break;
                default : break;
             }
@@ -208,8 +208,8 @@ private int jjMoveNfa_0(int startState, int curPos)
             switch(jjstateSet[--i])
             {
                case 1:
-                  if ((jjbitVec0[i2] & l2) != 0L && kind > 25)
-                     kind = 25;
+                  if ((jjbitVec0[i2] & l2) != 0L && kind > 24)
+                     kind = 24;
                   break;
                default : break;
             }
@@ -234,19 +234,19 @@ static final int[] jjnextStates = {
 
 /** Token literal values. */
 public static final String[] jjstrLiteralImages = {
-"", null, null, null, "\56", "\12", "\52", "\134", "\134\156", "\134\162", 
-"\53", "\77", "\50", "\51", "\173", "\54", "\175", "\133", "\135", "\174", "\136", 
-"\44", "\55", null, null, null, null, };
+"", null, null, "\56", "\12", "\52", "\134", "\134\156", "\134\162", "\53", 
+"\77", "\50", "\51", "\173", "\54", "\175", "\133", "\135", "\174", "\136", "\44", 
+"\55", null, null, null, null, };
 
 /** Lexer state names. */
 public static final String[] lexStateNames = {
    "DEFAULT",
 };
 static final long[] jjtoToken = {
-   0x7fffff1L, 
+   0x3fffff9L, 
 };
 static final long[] jjtoSkip = {
-   0xeL, 
+   0x6L, 
 };
 protected SimpleCharStream input_stream;
 private final int[] jjrounds = new int[7];
@@ -349,7 +349,7 @@ public Token getNextToken()
    }
 
    try { input_stream.backup(0);
-      while (curChar <= 32 && (0x100002200L & (1L << curChar)) != 0L)
+      while (curChar <= 13 && (0x2200L & (1L << curChar)) != 0L)
          curChar = input_stream.BeginToken();
    }
    catch (java.io.IOException e1) { continue EOFLoop; }

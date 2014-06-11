@@ -36,7 +36,7 @@ PARSER_END(PCRE)
 
 SKIP :
 {
-" " | "\t" | "\r" 
+ "\t" | "\r" 
 }
 
 TOKEN : /* IDENTIFIERS */
@@ -71,7 +71,7 @@ TOKEN : /* IDENTIFIERS */
 /* Symbols */
 | <NUMBER: (["0"-"9"])+ >
 | <CHARACTER: ["a"-"z"] | ["A"-"Z"] >
-| < MISC: "!"|"#"|"$"|"\""|"$"|"'"|"/"|":"|"&"|"="|"«"|"»"|"@"|"<"|">"|"~"|"´"|"`"|"º"|"ª"|"_"|";" >
+| < MISC: "!"|"#"|"$"|"\""|"$"|"'"|"/"|":"|"&"|"="|"«"|"»"|"@"|"<"|">"|"~"|"´"|"`"|"º"|"ª"|"_"|";"|" " >
 | < ESCAPED: < SLASH >(< SLASH > | <CARET >|<DOLLAR >|<DOT >
 						|<OPEN_SQ_BRACKET >|< CLOSE_SQ_BRACKET ><ALTERNATE >
 						| <OPEN_ROUND_BRACKET >|<CLOSE_ROUND_BRACKET >

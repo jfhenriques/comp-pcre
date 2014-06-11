@@ -11,51 +11,51 @@ public interface PCREConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int DOT = 4;
+  int DOT = 3;
   /** RegularExpression Id. */
-  int LF = 5;
+  int LF = 4;
   /** RegularExpression Id. */
-  int AST = 6;
+  int AST = 5;
   /** RegularExpression Id. */
-  int SLASH = 7;
+  int SLASH = 6;
   /** RegularExpression Id. */
-  int NEWLINE = 8;
+  int NEWLINE = 7;
   /** RegularExpression Id. */
-  int CARRIAGE_RETURN = 9;
+  int CARRIAGE_RETURN = 8;
   /** RegularExpression Id. */
-  int PLUS = 10;
+  int PLUS = 9;
   /** RegularExpression Id. */
-  int INTERROGATION = 11;
+  int INTERROGATION = 10;
   /** RegularExpression Id. */
-  int OPEN_ROUND_BRACKET = 12;
+  int OPEN_ROUND_BRACKET = 11;
   /** RegularExpression Id. */
-  int CLOSE_ROUND_BRACKET = 13;
+  int CLOSE_ROUND_BRACKET = 12;
   /** RegularExpression Id. */
-  int OPEN_BRACKET = 14;
+  int OPEN_BRACKET = 13;
   /** RegularExpression Id. */
-  int COMMA = 15;
+  int COMMA = 14;
   /** RegularExpression Id. */
-  int CLOSE_BRACKET = 16;
+  int CLOSE_BRACKET = 15;
   /** RegularExpression Id. */
-  int OPEN_SQ_BRACKET = 17;
+  int OPEN_SQ_BRACKET = 16;
   /** RegularExpression Id. */
-  int CLOSE_SQ_BRACKET = 18;
+  int CLOSE_SQ_BRACKET = 17;
   /** RegularExpression Id. */
-  int ALTERNATE = 19;
+  int ALTERNATE = 18;
   /** RegularExpression Id. */
-  int CARET = 20;
+  int CARET = 19;
   /** RegularExpression Id. */
-  int DOLLAR = 21;
+  int DOLLAR = 20;
   /** RegularExpression Id. */
-  int RANGE = 22;
+  int RANGE = 21;
   /** RegularExpression Id. */
-  int NUMBER = 23;
+  int NUMBER = 22;
   /** RegularExpression Id. */
-  int CHARACTER = 24;
+  int CHARACTER = 23;
   /** RegularExpression Id. */
-  int MISC = 25;
+  int MISC = 24;
   /** RegularExpression Id. */
-  int ESCAPED = 26;
+  int ESCAPED = 25;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -63,7 +63,6 @@ public interface PCREConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\" \"",
     "\"\\t\"",
     "\"\\r\"",
     "\".\"",
